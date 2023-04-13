@@ -1,0 +1,43 @@
+*{
+    margin:0;
+    padding: 0;
+    text-decoration:none
+}
+
+.header{
+    background-color: beige;
+    
+}
+
+.header .header-container{
+    width: 60%;
+    height: 100px;
+    display: flex;
+    justify-content:space-between;
+    align-items: center;
+    position: relative;
+    margin: auto;
+}
+
+.header .header-container .header-left{
+    display: flex;
+    align-items: center;
+  
+    
+}
+
+.header .header-container .header-left img{
+    width: 80px;
+    margin-right: 50px;
+}
+.header .header-container .header-left input{
+    width: 500px;
+    height: 30px;
+}
+
+.header .header-container .header-right{
+   
+}
+.header .header-container .header-right a{
+    padding-left: 20px;
+}

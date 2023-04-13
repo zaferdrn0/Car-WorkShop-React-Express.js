@@ -1,0 +1,39 @@
+.register-container{
+    display: flex;
+    width: 45%;
+    position: relative;
+    left: 28%;
+    margin-top: 150px;
+    background-color: cadetblue;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+}
+.register-container .register-left{
+    display: flex;
+    flex-direction: column;
+    margin-right: 30px;
+    
+}
+.register-container .register-left input{
+    margin-bottom: 20px;
+    width: 200px;
+    height: 20px;
+    padding-left: 10px;
+}
+.register-container .register-left h3{
+    padding-bottom: 15px;
+}
+.register-container .register-left h4{
+    text-align: center;
+    color:cornsilk;
+}
+.register-container .register-left button{
+    margin-bottom: 10px;
+    width: 100px;
+    text-align: center;
+    margin-left: 100px;
+}
+.register-container .register-right img{
+    width: 380px;
+}

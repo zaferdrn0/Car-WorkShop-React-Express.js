@@ -1,0 +1,34 @@
+  .listCar-container{
+   
+  }
+
+  .listCar-container h3 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .listCar-container ul {
+    list-style: none;
+    margin: 0;
+    padding: 5px;
+    display: flex;
+    flex-wrap: wrap;
+    
+  }
+  
+  .listCar-container li {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+   width: 200px;
+   height: 60px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+   cursor: pointer;
+  }
+  .listCar-container li h4{
+    padding-top: 15px;
+    font-size: 20px;
+    font-weight: 500;
+  }
