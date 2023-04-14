@@ -1,0 +1,16 @@
+.admin-control{
+display:flex;
+margin: 0 auto;
+margin-top: 70px;
+width: 90%;
+
+}
+
+.edit-container{
+    background-color:beige;
+    width: 100%;
+    border-radius: 0 20px 20px 0;
+    padding-left: 70px;
+    padding-top:100px ;
+    
+}

@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 
 const RepairType = () => {
-    let params = useParams();
+  let params = useParams();
   const [rType, setRType] = useState("");
   const [Types, setTypes] = useState([]);
   const navigate = useNavigate();
@@ -24,9 +24,9 @@ const RepairType = () => {
     });
   });
 
-  const addUrl = (type) =>{
-    navigate("/marka/"+params.marka+"/" + params.model+"/"+type);
-  }
+  const addUrl = (type) => {
+    navigate("/marka/" + params.marka + "/" + params.model + "/" + type);
+  };
 
   return (
     <div className="repairType">
@@ -40,10 +40,16 @@ const RepairType = () => {
         <button onClick={addRType}>ekle</button>
       </div>
       <div className="list">
-        {Types.map((type,index) =>{
-         return   <Box key ={index} label ={type} onClick = {() =>{
-            addUrl(type)
-           }}/>
+        {Types.map((type, index) => {
+          return (
+            <Box
+              key={index}
+              label={type}
+              onClick={() => {
+                addUrl(type);
+              }}
+            />
+          );
         })}
       </div>
     </div>

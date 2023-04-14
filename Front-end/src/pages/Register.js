@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Header from "../components/Header";
 import { useNavigate } from "react-router-dom";
-import "./css/Register.css"
+import "./css/Register.css";
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -11,32 +11,28 @@ const Register = () => {
   const navigate = useNavigate();
 
   const register = async () => {
-    
-      const response = await fetch("http://localhost:4000/register", {
-        method: "POST",
-        credentials : "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username: username,
-          email: email,
-          password: password,
-          phone: phone,
-        }),
-      });
+    const response = await fetch("http://localhost:4000/register", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: username,
+        email: email,
+        password: password,
+        phone: phone,
+      }),
+    });
 
-      const result = await response.json();
-      if(result.rota === "home"){
-        navigate("/")
-      }
-  
-    
+    const result = await response.json();
+    if (result.rota === "home") {
+      navigate("/");
+    }
   };
 
   return (
     <div className="register">
-      <Header />
       <div className="register-container">
         <div className="register-left">
           <h3>Register</h3>

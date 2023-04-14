@@ -44,7 +44,12 @@ const ListMarka = () => {
 
   return (
     <div>
-      <input onChange={(event) =>{setMarka(event.target.value)}} placeholder="marka ekle"/>
+      <input
+        onChange={(event) => {
+          setMarka(event.target.value);
+        }}
+        placeholder="marka ekle"
+      />
       <button onClick={addMarka}>ekle</button>
       <div className="list">
         {markas.map((mrk, index) => {

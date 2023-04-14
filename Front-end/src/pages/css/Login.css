@@ -1,22 +1,20 @@
-
-.login-container{
-    background-color: rgb(142, 168, 179);
-    position: absolute;
-    top: 20%;
-    left: 35%;
-   display: flex;
-   width: 700px;
-   
+.login-container {
+  background-color: rgb(142, 168, 179);
+  position: absolute;
+  top: 20%;
+  left: 35%;
+  display: flex;
+  width: 700px;
 }
 
-.login-container .login-left{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 50%;
-    margin-top: 100px;
+.login-container .login-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 50%;
+  margin-top: 100px;
 }
 
-.login-container .login-right img{
-    width: 300px;
+.login-container .login-right img {
+  width: 300px;
 }

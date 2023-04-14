@@ -246,13 +246,20 @@ app.post("/addRType", async (req, res) => {
   });
 });
 
-app.get("/getRType", async (req, res) =>{
-   RepairType.find({})
-   .then((result) =>{
+app.get("/getRType", async (req, res) => {
+  RepairType.find({}).then((result) => {
     let types = result.map((mod) => mod.ad);
-    return res.send(types)
-   })
-})
+    return res.send(types);
+  });
+});
+
+app.get("/getWorkshop", async (req, res) => {
+  let url = req.query.url;
+
+  Workshop.find({ "maintenance.ad": url }).then((result) => {
+    return res.send(result);
+  });
+});
 
 app.listen(port, function () {
   console.log(`Server running at ${port}/`);

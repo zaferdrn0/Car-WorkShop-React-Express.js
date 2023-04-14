@@ -25,7 +25,6 @@ const Login = () => {
 
   return (
     <div className="login">
-      <Header />
       <div className="login-container">
         <div className="login-left">
           <input

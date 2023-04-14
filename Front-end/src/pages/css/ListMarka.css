@@ -1,26 +1,19 @@
-
-
-.listMarka .listMarka-container{
-    width: 70%;
-    margin:  auto;
-   background-color: aliceblue;
-   margin-top: 50px;
-   min-height: 70vh;
-   
+.listMarka .listMarka-container {
+  width: 70%;
+  margin: auto;
+  background-color: aliceblue;
+  margin-top: 50px;
+  min-height: 70vh;
 }
 
+.list {
+  width: 70%;
+  display: flex;
+  margin: auto;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: center;
+  background-color: white;
 
-.list{
-    width: 70%;
-    display: flex;
-    margin:  auto;
-    flex-wrap: wrap;
-    align-items:flex-start;
-    justify-content: center;
-    background-color: white;
-    
-    padding-top: 20px;
-
-    
-    
+  padding-top: 20px;
 }
