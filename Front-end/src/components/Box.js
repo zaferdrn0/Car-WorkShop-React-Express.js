@@ -5,7 +5,7 @@ const Box = (props) => {
   const { label, onClick } = props;
 
   return (
-    <>
+    
       <div className="listCar-container">
         <ul>
           <a onClick={onClick}>
@@ -17,7 +17,8 @@ const Box = (props) => {
           </a>
         </ul>
       </div>
-    </>
+      
+      
   );
 };
 

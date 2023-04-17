@@ -5,37 +5,37 @@ const AdminHeader = () => {
   return (
     <div className="admin-left-header">
       <a href="/">
-        <img src="./images/logo.png" />
+        <img alt="" src="./images/logo.png" />
       </a>
       <div className="panel">
         <ul>
           <li>
-            <a href="/users">
+            <a href="/admin/users">
               <h4>Users</h4>
             </a>
           </li>
           <li>
-            <a href="/brands">
+            <a href="/admin/brands">
               <h4>Car Brands</h4>{" "}
             </a>
           </li>
           <li>
-            <a href="/models">
+            <a href="/admin/models">
               <h4>Car Models</h4>
             </a>
           </li>
           <li>
-            <a href="/rtype">
+            <a href="/admin/rtype">
               <h4>Repair Type</h4>
             </a>
           </li>
           <li>
-            <a href="/workshops">
+            <a href="/admin/workshops">
               <h4>Workshops</h4>
             </a>
           </li>
           <li>
-            <a href="/message">
+            <a href="/admin/message">
               <h4>Message</h4>
             </a>
           </li>

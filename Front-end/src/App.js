@@ -11,6 +11,7 @@ import MarkaLayout from "./Layout/MarkaLayout";
 import IndexLayout from "./Layout/IndexLayout";
 import AdminUsers from "./admin/AdminUsers";
 import AdminLayout from "./admin/AdminLayout";
+import AdminBrands from "./admin/AdminBrands";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
         
           <Route index element = {<AdminUsers/>}/>
           <Route path="/admin/users" element ={<AdminUsers/>} />
+          <Route path="/admin/brands" element ={<AdminBrands/>}/>
         </Route>
       </Routes>
     </BrowserRouter>

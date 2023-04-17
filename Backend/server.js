@@ -172,7 +172,7 @@ app.post("/reqMarka", async (req, res) => {
     return res.status(200).send(JSON.stringify({ rota: "login" }));
   }
 });
-
+// marka ekle
 app.post("/addMarka", async (req, res) => {
   let marka = req.body.marka;
   let mrk = await Marka.findOne({ ad: marka });
@@ -186,7 +186,7 @@ app.post("/addMarka", async (req, res) => {
     console.log("marka kayıt oldu");
   }
 });
-
+// marka ekle
 app.get("/getMarka", async (req, res) => {
   Marka.find({}, "ad")
     .then((markas) => {
@@ -196,8 +196,8 @@ app.get("/getMarka", async (req, res) => {
       throw err;
     });
 });
-
-app.post("/postMarka", async (req, res) => {
+ // list marka
+/* app.post("/postMarka", async (req, res) => {
   let marka = req.body.marka;
   Marka.findOne({ ad: marka }).then((result) => {
     if (result) {
@@ -206,8 +206,9 @@ app.post("/postMarka", async (req, res) => {
       return res.send(JSON.stringify({ err: "marka bulunamadı" }));
     }
   });
-});
-
+}); */
+ // list marka
+ // add model
 app.post("/addModel", async (req, res) => {
   let model = req.body.model;
   let marka = req.body.marka;
@@ -219,7 +220,8 @@ app.post("/addModel", async (req, res) => {
     console.log(result);
   });
 });
-
+ // add model
+ // list model
 app.get("/getModel", async (req, res) => {
   let marka = req.query.marka;
   Marka.findOne({ ad: marka }).then((result) => {
@@ -230,7 +232,8 @@ app.get("/getModel", async (req, res) => {
     }
   });
 });
-
+ // list model
+ // add Repair type
 app.post("/addRType", async (req, res) => {
   let rType = req.body.rType;
   RepairType.findOne({ ad: rType }).then((result) => {
@@ -245,14 +248,17 @@ app.post("/addRType", async (req, res) => {
     }
   });
 });
-
+ // add Repair type
+ // get Repair type
 app.get("/getRType", async (req, res) => {
   RepairType.find({}).then((result) => {
     let types = result.map((mod) => mod.ad);
     return res.send(types);
   });
 });
+ // get Repair type
 
+ // get Workshops
 app.get("/getWorkshop", async (req, res) => {
   let url = req.query.url;
 
@@ -260,7 +266,21 @@ app.get("/getWorkshop", async (req, res) => {
     return res.send(result);
   });
 });
+ // get Workshops
 
+ // get admin users
+ app.get("/getAdminUser", async (req,res) =>{
+    User.find({admin:"0"})
+    .then((result) =>{
+      if(result){
+        return res.send(result);
+      }
+     else{
+      return res.send(JSON.stringify({message: "admin kullanıcısı bulunamadı"}))
+     }
+    })
+ })
+ // get admin users
 app.listen(port, function () {
   console.log(`Server running at ${port}/`);
 });

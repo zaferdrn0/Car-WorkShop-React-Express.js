@@ -16,6 +16,7 @@ const ListWorkshop = () => {
       async (response) => {
         const data = await response.json();
         setWorkshop(data);
+        console.log(data)
       }
     );
   }, []);
