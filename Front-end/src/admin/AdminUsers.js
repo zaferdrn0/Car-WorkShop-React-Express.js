@@ -24,7 +24,7 @@ const AdminUsers = () => {
               <th>Ad</th>
               <th>Soyad</th>
               <th>Numara</th>
-              <th>Islemler</th>
+              <th className='islemler-stun'>Islemler</th>
             </tr>
           </thead>
       {adminUsers.map((obj,index) =>{

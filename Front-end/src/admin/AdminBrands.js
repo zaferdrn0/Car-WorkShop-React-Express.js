@@ -24,7 +24,7 @@ const AdminBrands = () => {
       <thead>
            <tr>
              <th>Model</th>
-             <th>Islemler</th>
+             <th className='islemler-stun'>Islemler</th>
            </tr>
          </thead>
      {brand.map((obj,index) =>{
