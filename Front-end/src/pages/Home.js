@@ -1,5 +1,4 @@
 import React from "react";
-
 import "./css/Home.css";
 import { backendFetchPOST } from "../utils/backendFetch";
 import { useNavigate } from "react-router-dom";

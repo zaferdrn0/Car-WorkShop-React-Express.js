@@ -48,5 +48,10 @@ table {
     right: 20px;
 }
 .islemler-stun{
-  width: 30%;
+  width: 15%;
+  margin-right: 20px;
+}
+.admin-delete-update-buttons{
+  text-align: center;
+  
 }

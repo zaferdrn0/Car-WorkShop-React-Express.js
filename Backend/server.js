@@ -9,6 +9,7 @@ const User = require("./models/User");
 const Workshop = require("./models/Workshop");
 const Marka = require("./models/Car");
 const RepairType = require("./models/RepairType");
+const City = require("./models/Cities");
 const port = 4000;
 app.use(require("body-parser").json());
 
@@ -53,6 +54,15 @@ app.use(
 );
 //Cors Connection
 
+app.get("/admin", function (req, res) {
+  if (req.session.user && req.session.user.isAdmin === "1") {
+    // Yetkili kullanıcı, admin sayfalarını görebilir.
+  } else {
+    // Yetkisiz erişim
+    res.redirect("/");
+  }
+});
+
 //Register
 app.post("/register", async (req, res) => {
   try {
@@ -92,6 +102,31 @@ app.post("/register", async (req, res) => {
   } catch {}
 });
 //Register
+
+// Add admin user
+app.post("/addAdminUser", async (req, res) => {
+  let username = req.body.username;
+  let email = req.body.email;
+  let password = req.body.password;
+  let phone = req.body.phone;
+  let admin = req.body.admin;
+
+  User.findOne({ email: email }).then((response) => {
+    if (response) {
+      return res.send({ message: "kayitli kullanici" });
+    } else {
+      const yeniKullanici = new User({
+        username: username,
+        email: email,
+        password: password,
+        phone: phone,
+        admin: admin,
+      });
+      yeniKullanici.save();
+      return res.send({ message: "basarıyla kayıt oldu" });
+    }
+  });
+});
 
 //Login
 app.post("/login", async (req, res) => {
@@ -196,23 +231,11 @@ app.get("/getMarka", async (req, res) => {
       throw err;
     });
 });
- // list marka
-/* app.post("/postMarka", async (req, res) => {
-  let marka = req.body.marka;
-  Marka.findOne({ ad: marka }).then((result) => {
-    if (result) {
-      return res.send(JSON.stringify({ model: result.modeller }));
-    } else {
-      return res.send(JSON.stringify({ err: "marka bulunamadı" }));
-    }
-  });
-}); */
- // list marka
- // add model
+
+// add model
 app.post("/addModel", async (req, res) => {
   let model = req.body.model;
   let marka = req.body.marka;
-  console.log(marka + model);
 
   Marka.findOne({ ad: marka }).then((result) => {
     result.modeller.push({ ad: model });
@@ -220,8 +243,28 @@ app.post("/addModel", async (req, res) => {
     console.log(result);
   });
 });
- // add model
- // list model
+// add model
+
+// delete model
+app.post("/deleteModel", async (req, res) => {
+  let marka = req.body.marka;
+  let model = req.body.model;
+
+  Marka.findOne({ ad: marka }).then((result) => {
+    console.log("yenisi" + result);
+    const index = result.modeller.findIndex((opt) => opt.ad === model);
+
+    if (index !== -1) {
+      result.modeller.splice(index, 1);
+      result.save();
+      console.log("Model silindi.");
+    } else {
+      console.log("Silinecek model bulunamadı.");
+    }
+  });
+});
+
+// list model
 app.get("/getModel", async (req, res) => {
   let marka = req.query.marka;
   Marka.findOne({ ad: marka }).then((result) => {
@@ -232,8 +275,8 @@ app.get("/getModel", async (req, res) => {
     }
   });
 });
- // list model
- // add Repair type
+// list model
+// add Repair type
 app.post("/addRType", async (req, res) => {
   let rType = req.body.rType;
   RepairType.findOne({ ad: rType }).then((result) => {
@@ -248,17 +291,31 @@ app.post("/addRType", async (req, res) => {
     }
   });
 });
- // add Repair type
- // get Repair type
+// add Repair type
+// get Repair type
 app.get("/getRType", async (req, res) => {
   RepairType.find({}).then((result) => {
     let types = result.map((mod) => mod.ad);
     return res.send(types);
   });
 });
- // get Repair type
+// get Repair type
 
- // get Workshops
+// delete repair type
+app.post("/deleteRType", async (req, res) => {
+  let rType = req.body.rType;
+  RepairType.findOneAndDelete({ ad: rType })
+    .then((result) => {
+      if (result) {
+        console.log(`Successfully deleted document with  ${rType}.`);
+      } else {
+        console.log(`No document found with _id: ${rType}.`);
+      }
+    })
+    .catch((err) => console.error(`Failed to delete document: ${err}`));
+});
+
+// get Workshops
 app.get("/getWorkshop", async (req, res) => {
   let url = req.query.url;
 
@@ -266,21 +323,82 @@ app.get("/getWorkshop", async (req, res) => {
     return res.send(result);
   });
 });
- // get Workshops
+// get Workshops
 
- // get admin users
- app.get("/getAdminUser", async (req,res) =>{
-    User.find({admin:"0"})
-    .then((result) =>{
-      if(result){
-        return res.send(result);
+// get admin users
+app.get("/getAdminUser", async (req, res) => {
+  User.find({ admin: "1" }).then((result) => {
+    if (result) {
+      return res.send(result);
+    } else {
+      return res.send(
+        JSON.stringify({ message: "admin kullanıcısı bulunamadı" })
+      );
+    }
+  });
+});
+// get admin users
+app.get("/adminCheck", async (req, res) => {
+  let user = req.session.user;
+  if (user) {
+    if (user.admin === "1") {
+      return res.status(200).send(JSON.stringify({ check: "1" }));
+    } else {
+      return res.status(401).send(JSON.stringify({ check: "0" }));
+    }
+  } else {
+    return res.status(404).send(JSON.stringify({ check: "2" }));
+  }
+});
+
+// delete users
+app.post("/deleteUser", async (req, res) => {
+  User.findOneAndDelete({ email: req.body.email })
+    .then((response) => {
+      if (response) {
+        console.log(
+          `Successfully deleted document with _id: ${req.body.email}.`
+        );
+      } else {
+        console.log(`No document found with _id: ${req.body.email}.`);
       }
-     else{
-      return res.send(JSON.stringify({message: "admin kullanıcısı bulunamadı"}))
-     }
     })
- })
- // get admin users
+    .catch((err) => console.error(`Failed to delete document: ${err}`));
+});
+// delete users
+
+// delete brand
+app.post("/deleteBrand", async (req, res) => {
+  Marka.findOneAndDelete({ ad: req.body.brand })
+    .then((response) => {
+      if (response) {
+        console.log(`Successfully deleted document with  ${req.body.brand}.`);
+      } else {
+        console.log(`No document found with  ${req.body.brand}.`);
+      }
+    })
+    .catch((err) => console.error(`Failed to delete document: ${err}`));
+});
+
+app.get("/getCity", async (req, res) => {
+  City.find({}, "ilAdi")
+    .then((il) => {
+      return res.send(il);
+    })
+    .catch((err) => {
+      throw err;
+    });
+});
+
+app.get("/getDistrict", async (req, res) => {
+  console.log(req.query.city);
+  City.find({ ilAdi: req.query.city })
+    .then((il) => {})
+    .catch((err) => {
+      throw err;
+    });
+});
+
 app.listen(port, function () {
   console.log(`Server running at ${port}/`);
 });

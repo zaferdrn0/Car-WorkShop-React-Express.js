@@ -6,18 +6,9 @@ import { useNavigate } from "react-router-dom";
 
 const ListModel = () => {
   let params = useParams();
-  const [model, setModel] = useState("");
   const [models, setModels] = useState([]);
   const navigate = useNavigate();
-  const addModel = async () => {
-    backendFetchPOST(
-      "/addModel",
-      { model: model, marka: params.marka },
-      async (response) => {
-        const data = await response.json();
-      }
-    );
-  };
+  
   useEffect(() => {
     console.log(models);
   }, [models]);
@@ -39,32 +30,32 @@ const ListModel = () => {
   const addUrl = (modelAdi) => {
     navigate("/marka/" + params.marka + "/" + modelAdi);
   };
-
-  return (
-    <div className="model">
-      <input
-        onChange={(event) => {
-          setModel(event.target.value);
-        }}
-        placeholder="model gir"
-      />
-      <button onClick={addModel}>ekle</button>
-      <div className="list">
-        {models.map((mdl, index) => {
-          return (
-            <Box
-              key={index}
-              label={mdl.ad}
-              onClick={() => {
-                addUrl(mdl.ad);
-              }}
-            />
-          );
-        })}
-        <div></div>
+  if(models.length !==0){
+    return (
+      <div className="model">
+        
+        <div className="list">
+          {models.map((mdl, index) => {
+            return (
+              <Box
+                key={index}
+                label={mdl.ad}
+                onClick={() => {
+                  addUrl(mdl.ad);
+                }}
+              />
+            );
+          })}
+          <div></div>
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
+  else{
+    return(
+      <p>Model yok</p>
+    )
+ }
 };
 
 export default ListModel;

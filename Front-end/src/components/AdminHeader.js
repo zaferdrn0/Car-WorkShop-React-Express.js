@@ -5,7 +5,7 @@ const AdminHeader = () => {
   return (
     <div className="admin-left-header">
       <a href="/">
-        <img alt="" src="./images/logo.png" />
+        <img alt="" src="/images/logo.png" />
       </a>
       <div className="panel">
         <ul>

@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { backendFetchGET } from "../utils/backendFetch";
+import { backendFetchGET, backendFetchPOST } from "../utils/backendFetch";
 import TableList from "../components/TableList";
 
 const AdminBrands = () => {
   const [brand, setBrand] = useState([]);
+
+  const [pageState, setPageState] = useState("table");
 
   useEffect(() => {
     const getMarka = async () => {
@@ -16,22 +18,72 @@ const AdminBrands = () => {
     getMarka();
   }, []);
 
-  return (
-    <div className="table-admin">
-      <button className="ekle-admin">ekle</button>
-      <table>
-        <thead>
-          <tr>
-            <th>Model</th>
-            <th className="islemler-stun">Islemler</th>
-          </tr>
-        </thead>
-        {brand.map((obj, index) => {
-          return <TableList key={index} name={obj.ad} />;
-        })}
-      </table>
-    </div>
-  );
+  const columnNames = ["Brand"];
+
+  const rowValues = brand.map((brnd) => {
+    return {
+      [columnNames[0]]: brnd.ad,
+    };
+  });
+
+  const updateBrand = (row) => {
+    console.log("marka guncellendi");
+    console.log(row);
+  };
+  const deleteBrand = (row) => {
+    backendFetchPOST("/deleteBrand", { brand: row.Brand }, async (response) => {
+      const data = await response.json();
+      console.log(data);
+    });
+    const newAdminBrand = brand.filter((brand) => brand.ad !== row.Brand);
+    setBrand(newAdminBrand);
+  };
+    const [brandSet, setbrandSet] = useState("");
+
+    const AddBrand = () =>{
+      backendFetchPOST("/addMarka", {marka: brandSet}, async (response) =>{
+        const data = await response.json();
+        console.log(data);
+      })
+      
+    }
+
+  if (pageState === "table") {
+    return (
+      <div className="table-admin">
+        <button
+          className="ekle-admin"
+          onClick={() => {
+            setPageState("addUser");
+          }}
+        >
+          ekle
+        </button>
+        <TableList
+          columnNames={columnNames}
+          rowValues={rowValues}
+          onUpdate={updateBrand}
+          onDelete={deleteBrand}
+        />
+      </div>
+    );
+  } else {
+    return (
+      <div className="add-admin-brand">
+        <button
+          onClick={() => {
+            setPageState("table");
+          }}
+        >
+          geri don
+        </button>
+        <div>
+          <input onChange={(event) =>setbrandSet(event.target.value)} placeholder="Marka Giriniz"/>
+          <button onClick={AddBrand}>Ekle</button>
+        </div>
+      </div>
+    );
+  }
 };
 
 export default AdminBrands;

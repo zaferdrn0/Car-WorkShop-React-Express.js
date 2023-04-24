@@ -1,34 +1,40 @@
 import React from "react";
 import "./css/tableList.css";
 const TableList = (props) => {
-  const propKeys = Object.keys(props);
-
-  
-  const tableCells = propKeys.map((propName) => (
-    <td key={propName}>{props[propName]}</td>
-  ));
-
-  const buttons = (
-    <td>
-      <button key="delete" type="button">
-        Sil
-      </button>{" "}
-      <button key="update" type="button">
-        Güncelle
-      </button>
-    </td>
-  );
-
-
   return (
-
-          <tbody>
+    <table>
+      <thead>
+        <tr>
+          {props.columnNames.map((columnName) => {
+            return <th key={columnName}>{columnName}</th>;
+          })}
+          <th className="islemler-stun">Islemler</th>
+        </tr>
+      </thead>
+      {props.rowValues.map((row, index) => {
+        return (
+          <tbody key={index}>
             <tr>
-              {tableCells}{buttons}
+              {props.columnNames.map((value, index) => {
+                return <td key={index}>{row[value]}</td>;
+              })}
+              <td>
+                {props.onDelete !== undefined && (
+                  <button onClick={() => {props.onDelete(row)}} key="delete" type="button">
+                    Sil
+                  </button>
+                )}
+                {props.onUpdate !== undefined && (
+                  <button onClick={() => {props.onUpdate(row)}} key="update" type="button">
+                    Güncelle
+                  </button>
+                )}
+              </td>
             </tr>
           </tbody>
-       
-   
+        );
+      })}
+    </table>
   );
 };
 
