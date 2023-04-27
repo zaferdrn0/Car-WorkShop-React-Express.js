@@ -7,13 +7,17 @@ const Header = () => {
         <div className="header-left">
           <a href="/">
             <img src="./images/logo.png" alt="logo" />
+
           </a>
-          <input type="text" placeholder="Servis adi veya Servis No ile ara" />
-          <a href="#">ara</a>
+          <a className="servis" href="/"><h5>Servis Bulmak İçin Tıklanıyız</h5> </a>
+          <a className="dukkan"> <h5>Servisler</h5></a>
+          <a className="dukkan"> <h5>Yakıt Hesapla</h5></a>
+          
         </div>
         <div className="header-right">
-          <a href="login">Giriş Yap</a>
-          <a href="register">Üye Ol</a>
+          
+          <a href="/login"><h5>Giriş Yap</h5></a>
+          <a href="/register"><h5>Kayıt Ol</h5></a>
         </div>
       </div>
     </div>

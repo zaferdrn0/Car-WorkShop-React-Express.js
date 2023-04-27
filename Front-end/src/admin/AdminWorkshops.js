@@ -9,6 +9,7 @@ const AdminWorkshops = () => {
   const [repairTypes, setRepairTypes] = useState([]);
   const [cities, setCities] = useState([]);
   const [cityName, setCityName] = useState("");
+  const [district, setDistrict] = useState([]);
 
   const getRepairType = () => {
     backendFetchGET("/getRType", async (response) => {
@@ -71,7 +72,7 @@ const AdminWorkshops = () => {
       "/getDistrict?" + queryParams.toString(),
       async (response) => {
         const data = await response.json();
-        console.log(data);
+        setDistrict(data);
       }
     );
   };
@@ -103,7 +104,21 @@ const AdminWorkshops = () => {
               );
             })}
           </select>
-          <input placeholder="Image" />
+          <select defaultValue={""}>
+            <option value="" disabled>
+              İlce Seçiniz
+            </option>
+            {district.map((dist, index) => {
+              return (
+                <option key={index} value={dist}>
+                  {dist}
+                </option>
+              );
+            })}
+          </select>
+          <h4>Image Add</h4>
+              <input id="productImage" name="resim" type="file" />
+          
           <input placeholder="phone" />
           <input placeholder="description" />
           <input placeholder="Address" />

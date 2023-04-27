@@ -1,57 +1,78 @@
-table {
-    font-family: Arial, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
-  }
-  
-  td, th {
-    border: 1px solid #dddddd;
-    text-align: left;
-    padding: 8px;
-  }
-  
-  th {
-    background-color: #4CAF50;
-    color: white;
-  }
-  
-  tr:nth-child(even) {
-    background-color: #f2f2f2;
-  }
-  
-  tr:hover {
-    background-color: #ddd;
-  }
-  
-  td:last-child {
-    text-align: center;
-  }
-  
- .table-admin button {
-    background-color: transparent;
-    border: none;
-    color: #4CAF50;
-    cursor: pointer;
-    font-size: 16px;
-    margin-right: 5px;
-  }
-  
- .table-admin button:hover {
-    color: #333;
-  }
 
-.ekle-admin{
-   
-    position: absolute;
-    position: absolute;
-    top: 50px;
-    right: 20px;
+/* Ana konteyner stilleri */
+.table-container {
+  display: flex;
+  justify-content: center;
+  max-height: 70vh;
+ overflow: auto;
 }
-.islemler-stun{
-  width: 15%;
-  margin-right: 20px;
-}
-.admin-delete-update-buttons{
-  text-align: center;
+
+/* Tablo stilleri */
+table {
+  width: 100%;
+  max-width: 1200px;
+  border-collapse: collapse;
+  margin: 0 auto;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  border-radius: 10px;
   
+}
+
+th,
+td {
+  padding: 12px;
+  text-align: left;
+}
+
+th {
+  background-color: #0077ff;
+  color: #fff;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+tr:nth-child(even) {
+  background-color: #f8f8f8;
+}
+
+td {
+  border-bottom: 0.5px solid #ddd;
+  font-size: 18px;
+}
+
+.islemler-stun {
+  text-align: center;
+  width: 20%;
+  min-width: 140px;
+
+}
+
+td button {
+  background-color: #0077ff;
+  color: #fff;
+  border: none;
+  padding: 7px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  
+}
+
+.table-buttons{
+  display: flex;
+  justify-content: center;
+}
+
+td button:hover {
+  background-color: #005ae6;
+}
+
+.delete {
+  background-color: #ff0000;
+  margin-right: 15px;
+  margin-bottom: 1px;
 }

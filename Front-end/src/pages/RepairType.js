@@ -30,15 +30,6 @@ const RepairType = () => {
 
   return (
     <div className="repairType">
-      <div>
-        <input
-          onChange={(event) => {
-            setRType(event.target.value);
-          }}
-          placeholder="type Gir"
-        />
-        <button onClick={addRType}>ekle</button>
-      </div>
       <div className="list">
         {Types.map((type, index) => {
           return (

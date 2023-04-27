@@ -2,6 +2,7 @@ import React from "react";
 import "./css/tableList.css";
 const TableList = (props) => {
   return (
+    <div className="table-container">
     <table>
       <thead>
         <tr>
@@ -18,9 +19,9 @@ const TableList = (props) => {
               {props.columnNames.map((value, index) => {
                 return <td key={index}>{row[value]}</td>;
               })}
-              <td>
+              <td className="table-buttons" >
                 {props.onDelete !== undefined && (
-                  <button onClick={() => {props.onDelete(row)}} key="delete" type="button">
+                  <button className="delete" onClick={() => {props.onDelete(row)}} key="delete" type="button">
                     Sil
                   </button>
                 )}
@@ -35,6 +36,7 @@ const TableList = (props) => {
         );
       })}
     </table>
+    </div>
   );
 };
 

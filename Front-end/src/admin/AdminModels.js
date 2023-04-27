@@ -54,53 +54,63 @@ const AdminModels = () => {
     console.log(row);
   };
   const deleteModel = (row) => {
-   backendFetchPOST("/deleteModel", {marka:brand, model: row.Model},async (response) =>{
-    const data = await response.json();
-    console.log(data);
-  
-  })
+    backendFetchPOST(
+      "/deleteModel",
+      { marka: brand, model: row.Model },
+      async (response) => {
+        const data = await response.json();
+        console.log(data);
+      }
+    );
   };
-  
 
-  const AddModel = () =>{
-    backendFetchPOST("/addModel", {marka:brand, model: model}, async (response) =>{
-      const data = await response.json();
-      console.log(data);
-    })
-  }
-  
-
-  
+  const AddModel = () => {
+    backendFetchPOST(
+      "/addModel",
+      { marka: brand, model: model },
+      async (response) => {
+        const data = await response.json();
+        console.log(data);
+      }
+    );
+  };
 
   if (pageState === "table") {
     return (
-      <div className="table-admin">
-        <select onChange={changeMarka} defaultValue={""}>
-          <option value="" disabled>
-            Marka Seçiniz
-          </option>
-          {brands.map((brnd, index) => {
-            return (
-              <option key={index} value={brnd.ad}>
-                {brnd.ad}
-              </option>
-            );
-          })}
-        </select>
-        <button
-          className="ekle-admin"
-          onClick={() => {
-            setPageState("addModel");
-          }}
-        >
-          ekle
-        </button>
-        <TableList
-          columnNames={columnNames}
-          rowValues={rowValues}
-          onUpdate={updateModel}
-          onDelete={deleteModel}
-        />
+      <div>
+        <div className="admin-top-header">
+          <div><h3>Model Control Panel</h3>
+          <select onChange={changeMarka} defaultValue={""}>
+            <option value="" disabled>
+              Marka Seçiniz
+            </option>
+            {brands.map((brnd, index) => {
+              return (
+                <option key={index} value={brnd.ad}>
+                  {brnd.ad}
+                </option>
+              );
+            })}
+          </select></div>
+          
+          <button
+            className="ekle-admin"
+            onClick={() => {
+              setPageState("addModel");
+            }}
+          >
+            ekle
+          </button>
+        </div>
+
+        <div className="table-admin">
+          <TableList
+            columnNames={columnNames}
+            rowValues={rowValues}
+            onUpdate={updateModel}
+            onDelete={deleteModel}
+          />
+        </div>
       </div>
     );
   } else {
@@ -115,22 +125,25 @@ const AdminModels = () => {
           geri don
         </button>
         <div>
-        <select onChange={changeMarka} defaultValue={""}>
-          <option value="" disabled>
-            Marka Seçiniz
-          </option>
-          {brands.map((brnd, index) => {
-            return (
-              <option key={index} value={brnd.ad}>
-                {brnd.ad}
-              </option>
-            );
-          })}
-        </select>
-          <input onChange={(event) =>setModel(event.target.value)} type="text" placeholder="Model Giriniz"/>
-       <button onClick={AddModel} > Model Ekle</button>
+          <select onChange={changeMarka} defaultValue={""}>
+            <option value="" disabled>
+              Marka Seçiniz
+            </option>
+            {brands.map((brnd, index) => {
+              return (
+                <option key={index} value={brnd.ad}>
+                  {brnd.ad}
+                </option>
+              );
+            })}
+          </select>
+          <input
+            onChange={(event) => setModel(event.target.value)}
+            type="text"
+            placeholder="Model Giriniz"
+          />
+          <button onClick={AddModel}> Model Ekle</button>
         </div>
-   
       </div>
     );
   }

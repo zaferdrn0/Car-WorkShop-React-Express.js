@@ -5,12 +5,12 @@
 }
 
 .header{
-    background-color: rgb(161, 193, 230);
+    background-color: rgba(108, 108, 108, 0.568);
     
 }
 
 .header .header-container{
-    width: 60%;
+    width: 70%;
     height: 100px;
     display: flex;
     justify-content:space-between;
@@ -30,14 +30,53 @@
     width: 80px;
     margin-right: 50px;
 }
-.header .header-container .header-left input{
-    width: 500px;
-    height: 30px;
-}
 
 .header .header-container .header-right{
-   
+
+  display: flex;
 }
 .header .header-container .header-right a{
-    padding-left: 20px;
+    margin-left: 20px;
+    color: white;
+    background-color: rgb(7, 114, 32);
+    font-size: 20px;
+    width: 100px;
+    height: 35px;
+    text-align: center;
+    padding-top: 10px;
+    border-radius: 10px;
+    transition: 300ms;
+    
+}
+.header .header-container .header-right a:hover{
+    background-color: rgb(75, 131, 205);
+    transform: scale(1.1);
+}
+
+.header .header-container .header-left a.servis{
+    margin-left: 20px;
+    color: white;
+    background-color: rgb(27, 27, 27);
+    font-size: 20px;
+    width: 300px;
+    height: 35px;
+    text-align: center;
+    padding-top: 10px;
+    border-radius: 10px;
+    transition: 300ms;
+   
+}
+
+.header .header-container .header-left a.dukkan{
+    margin-left: 20px;
+    color: white;
+    background-color: rgb(27, 27, 27);
+    font-size: 20px;
+    width: 150px;
+    height: 35px;
+    text-align: center;
+    padding-top: 10px;
+    border-radius: 10px;
+    transition: 300ms;
+   
 }

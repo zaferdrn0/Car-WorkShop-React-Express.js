@@ -1,38 +1,64 @@
 .register-container {
   display: flex;
-  width: 45%;
-  position: relative;
-  left: 28%;
-  margin-top: 150px;
-  background-color: cadetblue;
+  width: 35%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.8);
   align-items: center;
   justify-content: center;
-  border-radius: 10px;
+  border-radius: 15px;
+  height: 600px;
 }
 .register-container .register-left {
   display: flex;
   flex-direction: column;
-  margin-right: 30px;
+  align-items: center;
+  width: 50%;
+  height: 400px;
+  text-align: center;
 }
 .register-container .register-left input {
   margin-bottom: 20px;
-  width: 200px;
-  height: 20px;
+  width: 300px;
+  height: 40px;
   padding-left: 10px;
+  background-color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
+  border-radius: 10px;
+  font-size: 19px;
 }
 .register-container .register-left h3 {
-  padding-bottom: 15px;
+  padding-bottom: 30px;
+  color:white;
 }
 .register-container .register-left h4 {
   text-align: center;
-  color: cornsilk;
+  color: black
 }
 .register-container .register-left button {
-  margin-bottom: 10px;
-  width: 100px;
-  text-align: center;
-  margin-left: 100px;
+  margin-bottom: 35px;
+  margin-top: 15px;
+  width: 200px;
+  height: 35px;
+  background-color: rgba(255, 255, 255, 0.854);
+  border-radius: 5px;
+  border: 3px solid rgb(30, 144, 169);
+  transition: 200ms;
+
+}
+.register-container .register-left button:hover{
+  background-color: rgb(255, 255, 255);
+  color: black;
+  transform: scale(1.05);
 }
 .register-container .register-right img {
-  width: 380px;
+  width: 300px;
+}
+.register-container .register-left h4{
+  color:rgba(255, 255, 255, 0.68);
+}
+.register-container .register-left h4 a{
+  color: rgb(255, 255, 255);
 }

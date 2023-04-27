@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Header from "../components/Header";
 import { useNavigate } from "react-router-dom";
 import "./css/Login.css";
 import { backendFetchPOST } from "../utils/backendFetch";
@@ -27,6 +26,7 @@ const Login = () => {
     <div className="login">
       <div className="login-container">
         <div className="login-left">
+          <h3>LOGIN</h3>
           <input
             onChange={(event) => setEmail(event.target.value)}
             type="text"
@@ -39,12 +39,10 @@ const Login = () => {
           />
           <button onClick={userLogin}>LOG IN</button>
           <h4>
-            Register <a>Click</a>
+            Register <a href="/register">Click</a>
           </h4>
         </div>
-        <div className="login-right">
-          <img src="./images/RepairPhoto.png" alt="fotograf" />
-        </div>
+        
       </div>
     </div>
   );

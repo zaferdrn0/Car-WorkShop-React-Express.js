@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import AdminHeader from "../components/AdminHeader";
 import { Outlet } from "react-router-dom";
 import "./adminCss/adminLayout.css";
@@ -6,6 +6,7 @@ import { backendFetchGET } from "../utils/backendFetch"
 import { useNavigate } from "react-router-dom";
 
 const AdminLayout = () => {
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const containerStyle = {
     position: "relative",
@@ -19,20 +20,26 @@ const AdminLayout = () => {
       }
       else if(status === 404) {
         navigate("/login")
+      }else{
+        setLoading(true);
       }
       
     })} 
     adminCheck();
   },[])
-
-  return (
-    <div className="admin-control">
-      <AdminHeader />
-      <div style={containerStyle} className="edit-container">
-        <Outlet />
+  if(loading === true) {
+    return (
+      <div className="admin-control">
+        <AdminHeader />
+        <div style={containerStyle} className="edit-container">
+          <Outlet />
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
+  else{
+    return(<div></div>)
+  }
 };
 
 export default AdminLayout;

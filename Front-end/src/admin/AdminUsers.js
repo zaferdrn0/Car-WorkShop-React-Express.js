@@ -62,21 +62,27 @@ const AdminUsers = () => {
 
   if (pageState === "table") {
     return (
-      <div className="table-admin">
-        <button
-          className="ekle-admin"
-          onClick={() => {
-            setPageState("addUser");
-          }}
-        >
-          ekle
-        </button>
-        <TableList
-          columnNames={columnNames}
-          rowValues={rowValues}
-          onUpdate={updateUser}
-          onDelete={deleteUser}
-        />
+      <div >
+        <div className="admin-top-header">
+          <h3>User Control Panel</h3>
+          <button
+            className="ekle-admin"
+            onClick={() => {
+              setPageState("addUser");
+            }}
+          >
+           Add To User
+          </button>
+        </div>
+        <div className="table-admin">
+          {" "}
+          <TableList
+            columnNames={columnNames}
+            rowValues={rowValues}
+            onUpdate={updateUser}
+            onDelete={deleteUser}
+          />
+        </div>
       </div>
     );
   } else {

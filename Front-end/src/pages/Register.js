@@ -35,7 +35,7 @@ const Register = () => {
     <div className="register">
       <div className="register-container">
         <div className="register-left">
-          <h3>Register</h3>
+          <h3>REGISTER</h3>
           <input
             type="text"
             placeholder="Kullanıcı Adı Giriniz"
@@ -58,12 +58,10 @@ const Register = () => {
           />
           <button onClick={register}>SIGN IN</button>
           <h4>
-            Log In <a>Click</a>
+            Log In <a href="/login">Click</a>
           </h4>
         </div>
-        <div className="register-right">
-          <img src="./images/RepairPhoto.png" alt="fotograf" />
-        </div>
+        
       </div>
     </div>
   );

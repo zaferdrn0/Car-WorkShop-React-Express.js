@@ -50,21 +50,27 @@ const AdminBrands = () => {
 
   if (pageState === "table") {
     return (
-      <div className="table-admin">
+      <div >
+        <div className="admin-top-header">
+        <h3>Brand Control Panel</h3>
         <button
           className="ekle-admin"
           onClick={() => {
             setPageState("addUser");
           }}
         >
-          ekle
+          Add To Brand
         </button>
+        </div>
+        <div className="table-admin">
         <TableList
           columnNames={columnNames}
           rowValues={rowValues}
           onUpdate={updateBrand}
           onDelete={deleteBrand}
         />
+        </div>
+       
       </div>
     );
   } else {

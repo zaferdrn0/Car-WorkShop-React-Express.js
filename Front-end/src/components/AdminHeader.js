@@ -4,9 +4,16 @@ import "./css/adminHeader.css";
 const AdminHeader = () => {
   return (
     <div className="admin-left-header">
-      <a href="/">
-        <img alt="" src="/images/logo.png" />
-      </a>
+      <div className="admin-logo">
+        <a href="/">
+          <img alt="" src="/images/logo.png" />
+        </a>
+      </div>
+      <div className="admin-person">
+          <h4>Zafer Duran</h4>
+          <h5>Admin</h5>
+      </div>
+
       <div className="panel">
         <ul>
           <li>
@@ -40,6 +47,10 @@ const AdminHeader = () => {
             </a>
           </li>
         </ul>
+        
+      </div>
+      <div className="admin-exit">
+      <button>Exit</button>
       </div>
     </div>
   );

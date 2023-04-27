@@ -391,12 +391,21 @@ app.get("/getCity", async (req, res) => {
 });
 
 app.get("/getDistrict", async (req, res) => {
-  console.log(req.query.city);
-  City.find({ ilAdi: req.query.city })
-    .then((il) => {})
+  try{
+    City.findOne({ ilAdi: req.query.city })
+    .then((il) => { 
+      if(il === null){
+       
+      }else{
+        return res.send(il.ilceler)
+      }
+    
+    })
     .catch((err) => {
       throw err;
     });
+  } catch{}
+ 
 });
 
 app.listen(port, function () {
