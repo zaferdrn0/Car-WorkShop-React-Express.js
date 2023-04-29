@@ -10,8 +10,8 @@ const AdminHeader = () => {
         </a>
       </div>
       <div className="admin-person">
-          <h4>Zafer Duran</h4>
-          <h5>Admin</h5>
+        <h4>Zafer Duran</h4>
+        <h5>Admin</h5>
       </div>
 
       <div className="panel">
@@ -47,10 +47,9 @@ const AdminHeader = () => {
             </a>
           </li>
         </ul>
-        
       </div>
       <div className="admin-exit">
-      <button>Exit</button>
+        <button>Exit</button>
       </div>
     </div>
   );

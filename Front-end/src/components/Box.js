@@ -5,20 +5,17 @@ const Box = (props) => {
   const { label, onClick } = props;
 
   return (
-    
-      <div className="listCar-container">
-        <ul>
-          <a onClick={onClick}>
+    <div className="listCar-container">
+      <ul>
+        <a onClick={onClick}>
+          {" "}
+          <li>
             {" "}
-            <li>
-              {" "}
-              <h4>{label}</h4>{" "}
-            </li>
-          </a>
-        </ul>
-      </div>
-      
-      
+            <h4>{label}</h4>{" "}
+          </li>
+        </a>
+      </ul>
+    </div>
   );
 };
 

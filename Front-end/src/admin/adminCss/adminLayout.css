@@ -23,14 +23,25 @@ border-radius: 30px;
 
 .admin-top-header{
     width: 100%;
-    height: 5vh;
+    height: 7vh;
     display: flex;
     justify-content: space-between;
 
 }
+.admin-top-header .select-model{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.admin-top-header .select-model select{
+    margin-top: 15px;
+    width: 180px;
+    font-size: 21px;
+
+}
 .admin-top-header button{
-    height: 29px;
-    width: 100px;
+    height: 30px;
+    width: 120px;
     color: black;
     font-weight: 500;
     border: 0.5px solid #0077ff;
@@ -44,3 +55,4 @@ border-radius: 30px;
     border: none;
     color:white;
 }
+

@@ -38,39 +38,37 @@ const AdminBrands = () => {
     const newAdminBrand = brand.filter((brand) => brand.ad !== row.Brand);
     setBrand(newAdminBrand);
   };
-    const [brandSet, setbrandSet] = useState("");
+  const [brandSet, setbrandSet] = useState("");
 
-    const AddBrand = () =>{
-      backendFetchPOST("/addMarka", {marka: brandSet}, async (response) =>{
-        const data = await response.json();
-        console.log(data);
-      })
-      
-    }
+  const AddBrand = () => {
+    backendFetchPOST("/addMarka", { marka: brandSet }, async (response) => {
+      const data = await response.json();
+      console.log(data);
+    });
+  };
 
   if (pageState === "table") {
     return (
-      <div >
+      <div>
         <div className="admin-top-header">
-        <h3>Brand Control Panel</h3>
-        <button
-          className="ekle-admin"
-          onClick={() => {
-            setPageState("addUser");
-          }}
-        >
-          Add To Brand
-        </button>
+          <h3>Brand Control Panel</h3>
+          <button
+            className="ekle-admin"
+            onClick={() => {
+              setPageState("addUser");
+            }}
+          >
+            Add To Brand
+          </button>
         </div>
         <div className="table-admin">
-        <TableList
-          columnNames={columnNames}
-          rowValues={rowValues}
-          onUpdate={updateBrand}
-          onDelete={deleteBrand}
-        />
+          <TableList
+            columnNames={columnNames}
+            rowValues={rowValues}
+            onUpdate={updateBrand}
+            onDelete={deleteBrand}
+          />
         </div>
-       
       </div>
     );
   } else {
@@ -84,7 +82,10 @@ const AdminBrands = () => {
           geri don
         </button>
         <div>
-          <input onChange={(event) =>setbrandSet(event.target.value)} placeholder="Marka Giriniz"/>
+          <input
+            onChange={(event) => setbrandSet(event.target.value)}
+            placeholder="Marka Giriniz"
+          />
           <button onClick={AddBrand}>Ekle</button>
         </div>
       </div>

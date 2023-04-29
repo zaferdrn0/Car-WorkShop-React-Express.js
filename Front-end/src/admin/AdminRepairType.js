@@ -12,8 +12,7 @@ const AdminRepairType = () => {
       backendFetchGET("/getRType", async (response) => {
         const data = await response.json();
         setRtypes(data);
-        console.log(data)
-        
+        console.log(data);
       });
     };
     getRtype();
@@ -23,52 +22,59 @@ const AdminRepairType = () => {
 
   const rowValues = rtypes.map((type) => {
     return {
-      [columnNames[0]]: type
+      [columnNames[0]]: type,
     };
   });
 
-  
-  const updateType = (row) =>{
+  const updateType = (row) => {
     console.log("marka guncellendi");
-    console.log(row)
-  }
-  const deleteType = (row) =>{
-    backendFetchPOST("/deleteRType",{rType: row.Repair}, async (response) =>{
-      const data = await response.json();
-      console.log(data)
-    })
+    console.log(row);
+  };
+  const deleteType = (row) => {
+    backendFetchPOST(
+      "/deleteRType",
+      { rType: row.Repair },
+      async (response) => {
+        const data = await response.json();
+        console.log(data);
+      }
+    );
     const newRepairType = rtypes.filter((type) => type !== row.Repair);
     setRepairType(newRepairType);
-  }
+  };
 
-  const AddRepairType = () =>{
-    backendFetchPOST("/addRType", {rType: repairType}, async (response) =>{
+  const AddRepairType = () => {
+    backendFetchPOST("/addRType", { rType: repairType }, async (response) => {
       const data = await response.json();
       console.log(data);
-    })
-  }
-  
+    });
+  };
 
   if (pageState === "table") {
     return (
-      <div className="table-admin">
-        <button
-          className="ekle-admin"
-          onClick={() => {
-            setPageState("addUser");
-          }}
-        >
-          ekle
-        </button>
-        <TableList
-          columnNames={columnNames}
-          rowValues={rowValues}
-         onUpdate = {updateType}
-         onDelete = {deleteType}
-        />
+      <div>
+        <div className="admin-top-header">
+          <h3>Repair Type Control Page</h3>
+          <button
+            className="ekle-admin"
+            onClick={() => {
+              setPageState("addUser");
+            }}
+          >
+            Add To Repair
+          </button>
+        </div>
+        <div className="table-admin">
+          <TableList
+            columnNames={columnNames}
+            rowValues={rowValues}
+            onUpdate={updateType}
+            onDelete={deleteType}
+          />
+        </div>
       </div>
     );
-  }else {
+  } else {
     return (
       <div>
         <p>marka ekleniyor burada</p>
@@ -80,7 +86,10 @@ const AdminRepairType = () => {
           geri don
         </button>
         <div>
-          <input onChange={(event) =>setRepairType(event.target.value)} placeholder="Tamir Turu Giriniz"/>
+          <input
+            onChange={(event) => setRepairType(event.target.value)}
+            placeholder="Tamir Turu Giriniz"
+          />
           <button onClick={AddRepairType}>Ekle</button>
         </div>
       </div>

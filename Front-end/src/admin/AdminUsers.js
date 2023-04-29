@@ -62,7 +62,7 @@ const AdminUsers = () => {
 
   if (pageState === "table") {
     return (
-      <div >
+      <div>
         <div className="admin-top-header">
           <h3>User Control Panel</h3>
           <button
@@ -71,7 +71,7 @@ const AdminUsers = () => {
               setPageState("addUser");
             }}
           >
-           Add To User
+            Add To User
           </button>
         </div>
         <div className="table-admin">

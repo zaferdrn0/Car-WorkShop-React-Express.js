@@ -3,11 +3,9 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
-import ListMarka from "./pages/ListMarka";
-import ListModel from "./pages/ListModel";
-import RepairType from "./pages/RepairType";
+
 import ListWorkshop from "./pages/ListWorkshop";
-import MarkaLayout from "./Layout/MarkaLayout";
+
 import IndexLayout from "./Layout/IndexLayout";
 import AdminUsers from "./admin/AdminUsers";
 import AdminLayout from "./admin/AdminLayout";

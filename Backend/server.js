@@ -168,7 +168,9 @@ app.post("/login", async (req, res) => {
 //Workshop add
 app.post("/addWorkshop", async (req, res) => {
   let name = req.body.name;
-  let address = req.body.name;
+  let address = req.body.address;
+  let city = req.body.city;
+  let distict = req.body.distict;
   let image = req.body.image;
   let phone = req.body.phone;
   let description = req.body.description;
@@ -183,7 +185,7 @@ app.post("/addWorkshop", async (req, res) => {
       const newWorkshop = new Workshop({
         name: name,
         description: description,
-        address: address,
+        address: { city: city, distict: distict, address: address },
         phone: phone,
         image: image,
       });
@@ -195,11 +197,42 @@ app.post("/addWorkshop", async (req, res) => {
 });
 //Workshop add
 
+app.post("/addWorkshopProps", async (req, res) => {
+  let id = req.body.id;
+  let brand = req.body.brand;
+  let maintenance = req.body.maintenance;
+
+  Workshop.findOne({ _id: id }).then((result) => {
+    if (brand.trim() !== "") {
+      let index = result.brand.findIndex((item) => item.brand === brand);
+      if (index === -1) {
+        result.brand.push({ brand: brand });
+        console.log("marka girdim");
+      } else {
+        console.log("marka kayıtlı");
+      }
+    }
+    if (maintenance.trim() !== "") {
+      let index = result.maintenance.findIndex(
+        (item) => item.ad === maintenance
+      );
+      if (index === -1) {
+        result.maintenance.push({ ad: maintenance });
+        console.log("tur girdim");
+      } else {
+        console.log("tur kayıtlı");
+      }
+    }
+
+    result.save();
+  });
+});
+
 app.post("/reqMarka", async (req, res) => {
   console.log(req.session);
   if (req.session.user) {
     //userı kontrol et eger giriş yaptıysa marka secim sayfasına yönlendir.
-    console.log("marka");
+
     return res.status(200).send(JSON.stringify({ rota: "marka" }));
   } else {
     // eger kullanıcı giriş yapmadıysa logine yönlendir.
@@ -276,6 +309,7 @@ app.get("/getModel", async (req, res) => {
   });
 });
 // list model
+
 // add Repair type
 app.post("/addRType", async (req, res) => {
   let rType = req.body.rType;
@@ -317,10 +351,8 @@ app.post("/deleteRType", async (req, res) => {
 
 // get Workshops
 app.get("/getWorkshop", async (req, res) => {
-  let url = req.query.url;
-
-  Workshop.find({ "maintenance.ad": url }).then((result) => {
-    return res.send(result);
+  Workshop.find({}).then((result) => {
+    return res.json(result);
   });
 });
 // get Workshops
@@ -391,21 +423,64 @@ app.get("/getCity", async (req, res) => {
 });
 
 app.get("/getDistrict", async (req, res) => {
-  try{
+  try {
     City.findOne({ ilAdi: req.query.city })
-    .then((il) => { 
-      if(il === null){
-       
-      }else{
-        return res.send(il.ilceler)
+      .then((il) => {
+        if (il === null) {
+        } else {
+          return res.send(il.ilceler);
+        }
+      })
+      .catch((err) => {
+        throw err;
+      });
+  } catch {}
+});
+
+app.get("/getFilterWorkshop", async (req, res) => {
+  try {
+    const filter = {};
+    console.log("-- buradayim");
+    console.log(req.query);
+
+    // City ve district filtresi
+    if (req.query.city && req.query.district) {
+      filter["address.city"] = req.query.city;
+      filter["address.distict"] = req.query.district;
+    } else if (req.query.city) {
+      filter["address.city"] = req.query.city;
+    }
+
+    // Marka filtresi
+    if (req.query.brand) {
+      filter["brand.brand"] = req.query.brand;
+    }
+
+    // Maintenance filtresi
+    if (req.query.rtype) {
+      filter["maintenance.ad"] = req.query.rtype;
+    }
+
+    // Veritabanından kayıtları filtreleyin
+    const workshops = await Workshop.find(filter);
+
+    res.json(workshops);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Bir hata oluştu" });
+  }
+});
+
+app.post("/deleteWorkshop", async (req, res) => {
+  try {
+    Workshop.findOneAndDelete({ _id: req.body.id }).then((result) => {
+      if (result) {
+        res.send(JSON.stringify({ message: "basarıyla silindi" }));
+      } else {
+        res.send(JSON.stringify({ message: "bir hata olustu" }));
       }
-    
-    })
-    .catch((err) => {
-      throw err;
     });
-  } catch{}
- 
+  } catch {}
 });
 
 app.listen(port, function () {

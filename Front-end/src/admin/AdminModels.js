@@ -79,27 +79,30 @@ const AdminModels = () => {
     return (
       <div>
         <div className="admin-top-header">
-          <div><h3>Model Control Panel</h3>
-          <select onChange={changeMarka} defaultValue={""}>
-            <option value="" disabled>
-              Marka Seçiniz
-            </option>
-            {brands.map((brnd, index) => {
-              return (
-                <option key={index} value={brnd.ad}>
-                  {brnd.ad}
-                </option>
-              );
-            })}
-          </select></div>
-          
+          <h3>Model Control Panel</h3>
+          <div className="select-model">
+            <h4>Listelemek İstediğiniz Markayı Seçiniz</h4>{" "}
+            <select onChange={changeMarka} defaultValue={""}>
+              <option value="" disabled>
+                Marka Seçiniz
+              </option>
+              {brands.map((brnd, index) => {
+                return (
+                  <option key={index} value={brnd.ad}>
+                    {brnd.ad}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+
           <button
             className="ekle-admin"
             onClick={() => {
               setPageState("addModel");
             }}
           >
-            ekle
+            Add To Model
           </button>
         </div>
 
