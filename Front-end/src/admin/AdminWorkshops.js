@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { backendFetchGET, backendFetchPOST } from "../utils/backendFetch";
 import TableList from "../components/TableList";
+import "./adminCss/modal.css";
 
 const AdminWorkshops = () => {
   const [page, setPage] = useState("table");
@@ -20,6 +21,8 @@ const AdminWorkshops = () => {
   const [brand, setBrand] = useState("");
   const [workshopId, setWorkshopId] = useState("");
   const [repairType, setRepairType] = useState("");
+  const [workshopRow, setWorkshopRow] = useState({});
+  const [isVisible, setIsVisible] = useState(false);
 
   const getBrands = async () => {
     backendFetchGET("/getMarka", async (response) => {
@@ -69,10 +72,12 @@ const AdminWorkshops = () => {
     setCityName(selectedCity);
   };
   const getDistrict = async () => {
+    if (cityName === "") return;
     const queryParams = new URLSearchParams({ city: cityName });
     backendFetchGET(
       "/getDistrict?" + queryParams.toString(),
       async (response) => {
+        if (response.status === 404) return;
         const data = await response.json();
         setDistrict(data);
       }
@@ -84,7 +89,7 @@ const AdminWorkshops = () => {
 
   useEffect(() => {
     const getWorkshop = () => {
-      backendFetchGET("/getWorkshop", async (response) => {
+      backendFetchGET("/getWorkshops", async (response) => {
         const data = await response.json();
         setWorkshops(data);
         console.log(data);
@@ -122,27 +127,26 @@ const AdminWorkshops = () => {
       console.log(data);
     });
   };
+  async function aboutWorkshop(row) {
+    setIsVisible(!isVisible);
+    let id = row.id;
+
+    const queryParams = new URLSearchParams({ id: id });
+    await backendFetchGET(
+      "/getWorkshop?" + queryParams.toString(),
+      async (response) => {
+        const data = await response.json();
+        setWorkshopRow(data);
+      }
+    );
+  }
 
   const AddWorkshop = () => {
     let path = image;
     let uzantı = path.split("\\");
     let images = uzantı[2];
 
-    console.log(
-      name +
-        " " +
-        cityName +
-        " " +
-        dist +
-        " " +
-        phone +
-        " " +
-        description +
-        " " +
-        address +
-        " " +
-        images
-    );
+    
 
     backendFetchPOST(
       "/addWorkshop",
@@ -174,6 +178,51 @@ const AdminWorkshops = () => {
   };
 
   if (page === "table") {
+    try {
+      if (isVisible === true) {
+        return (
+          <div
+            style={{ display: isVisible ? "block" : "none" }}
+            className="modal"
+          >
+            <div className="workshop-modal">
+              <h4>Name: {workshopRow.name}</h4>
+              <h4>
+                Address:{" "}
+                {workshopRow.address.city +
+                  " " +
+                  workshopRow.address.distict +
+                  " " +
+                  workshopRow.address.address}{" "}
+              </h4>
+              <h4>Phone: {workshopRow.phone}</h4>
+              <h4>Description: {workshopRow.description}</h4>
+              <h4>
+                Markalar:{" "}
+                {workshopRow.brand.map((brand) => (
+                  <p>{brand.brand} </p>
+                ))}
+              </h4>
+              <h4>
+                RepairTypes:{" "}
+                {workshopRow.maintenance.map((rtype) => (
+                  <p>{rtype.ad}</p>
+                ))}
+              </h4>
+              <button
+                className="modal-close"
+                onClick={() => setIsVisible(!isVisible)}
+              >
+                Back
+              </button>
+            </div>
+          </div>
+        );
+      }
+    } catch {
+      console.log("heyyo hata");
+    }
+
     return (
       <div>
         <div className="admin-top-header">
@@ -189,6 +238,7 @@ const AdminWorkshops = () => {
             rowValues={rowValues}
             onUpdate={updateWorkshop}
             onDelete={deleteWorkshop}
+            onAbout={aboutWorkshop}
           />
         </div>
       </div>

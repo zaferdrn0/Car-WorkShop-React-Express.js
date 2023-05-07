@@ -1,0 +1,33 @@
+.modal {
+    position: fixed; /* modal kutusunu sabit konumda tutuyoruz */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* arka plana transparan, siyah bir renk veriyoruz */
+    display: none; /* modal kutusunu varsayılan olarak gizliyoruz */
+    z-index: 9999; /* modal kutusunu diğer elemanların üzerine yerleştiriyoruz */
+}
+
+.workshop-modal {
+    background-color: #fff; /* modal kutusunun içeriğine beyaz bir arkaplan rengi veriyoruz */
+    margin: 15% auto; /* modal kutusunu sayfanın ortasına yerleştiriyoruz */
+    padding: 20px;
+    border-radius: 5px;
+    width: 50%; /* modal kutusunun genişliğini ayarlıyoruz */
+    height: auto; /* modal kutusunun yüksekliğini otomatik olarak ayarlıyoruz */
+    position: relative; /* modal kutusunun içeriğinin konumunu göstermek için ilgili durumu belirtiyoruz */
+    
+}
+.workshop-modal h4{
+    display: flex;
+}
+.workshop-modal p {
+    text-indent: 20px;
+  }
+.modal-close {
+    position: absolute; 
+    top: 10px;
+    right: 10px;
+    cursor: pointer; 
+}

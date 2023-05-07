@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import AdminHeader from "../components/AdminHeader";
 import { Outlet } from "react-router-dom";
-import "./adminCss/adminLayout.css";
+import "../admin/adminCss/adminLayout.css";
 import { backendFetchGET } from "../utils/backendFetch";
 import { useNavigate } from "react-router-dom";
 

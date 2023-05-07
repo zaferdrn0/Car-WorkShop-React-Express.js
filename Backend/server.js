@@ -55,7 +55,7 @@ app.use(
 //Cors Connection
 
 app.get("/admin", function (req, res) {
-  if (req.session.user && req.session.user.isAdmin === "1") {
+  if (req.session.user && req.session.user.isAdmin === "admin") {
     // Yetkili kullanıcı, admin sayfalarını görebilir.
   } else {
     // Yetkisiz erişim
@@ -70,7 +70,7 @@ app.post("/register", async (req, res) => {
     let email = req.body.email;
     let password = req.body.password;
     let phone = req.body.phone;
-    console.log("calıstım");
+
 
     await User.findOne({ email: email })
       .then((result) => {
@@ -140,7 +140,6 @@ app.post("/login", async (req, res) => {
       if (result) {
         if (email === result.email && password === result.password) {
           req.session.user = result;
-          console.log(req.session);
           let message = JSON.stringify({
             message: ".Basarıyla Giris Yaptınız.",
             yonlendir: "1",
@@ -228,12 +227,11 @@ app.post("/addWorkshopProps", async (req, res) => {
   });
 });
 
-app.post("/reqMarka", async (req, res) => {
-  console.log(req.session);
+app.get("/reqUserLogin", async (req, res) => {
   if (req.session.user) {
     //userı kontrol et eger giriş yaptıysa marka secim sayfasına yönlendir.
 
-    return res.status(200).send(JSON.stringify({ rota: "marka" }));
+    return res.status(200).send(JSON.stringify({ rota: "session" }));
   } else {
     // eger kullanıcı giriş yapmadıysa logine yönlendir.
     console.log("login");
@@ -273,7 +271,6 @@ app.post("/addModel", async (req, res) => {
   Marka.findOne({ ad: marka }).then((result) => {
     result.modeller.push({ ad: model });
     result.save();
-    console.log(result);
   });
 });
 // add model
@@ -284,7 +281,7 @@ app.post("/deleteModel", async (req, res) => {
   let model = req.body.model;
 
   Marka.findOne({ ad: marka }).then((result) => {
-    console.log("yenisi" + result);
+
     const index = result.modeller.findIndex((opt) => opt.ad === model);
 
     if (index !== -1) {
@@ -300,13 +297,11 @@ app.post("/deleteModel", async (req, res) => {
 // list model
 app.get("/getModel", async (req, res) => {
   let marka = req.query.marka;
-  Marka.findOne({ ad: marka }).then((result) => {
-    if (result) {
-      let models = result.modeller.map((mod) => mod);
-      console.log(models);
-      return res.send(models);
-    }
-  });
+  let result = await Marka.findOne({ ad: marka });
+  if (result) {
+    let models = result.modeller.map((mod) => mod);
+    return res.send(models);
+  } else return res.status(404).send();
 });
 // list model
 
@@ -350,16 +345,24 @@ app.post("/deleteRType", async (req, res) => {
 });
 
 // get Workshops
-app.get("/getWorkshop", async (req, res) => {
+app.get("/getWorkshops", async (req, res) => {
   Workshop.find({}).then((result) => {
     return res.json(result);
   });
 });
 // get Workshops
-
+app.get("/getworkshop", async (req, res) => {
+  try {
+    Workshop.findOne({ _id: req.query.id }).then((result) => {
+      return res.json(result);
+    });
+  } catch {
+    console.log("hataaaa");
+  }
+});
 // get admin users
-app.get("/getAdminUser", async (req, res) => {
-  User.find({ admin: "1" }).then((result) => {
+app.get("/getUser", async (req, res) => {
+  User.find({}).then((result) => {
     if (result) {
       return res.send(result);
     } else {
@@ -373,8 +376,8 @@ app.get("/getAdminUser", async (req, res) => {
 app.get("/adminCheck", async (req, res) => {
   let user = req.session.user;
   if (user) {
-    if (user.admin === "1") {
-      return res.status(200).send(JSON.stringify({ check: "1" }));
+    if (user.admin === "admin") {
+      return res.status(200).send(JSON.stringify({ check: "admin" }));
     } else {
       return res.status(401).send(JSON.stringify({ check: "0" }));
     }
@@ -424,24 +427,21 @@ app.get("/getCity", async (req, res) => {
 
 app.get("/getDistrict", async (req, res) => {
   try {
-    City.findOne({ ilAdi: req.query.city })
-      .then((il) => {
-        if (il === null) {
-        } else {
-          return res.send(il.ilceler);
-        }
-      })
-      .catch((err) => {
-        throw err;
-      });
-  } catch {}
+    let il = await City.findOne({ ilAdi: req.query.city });
+
+    if (il !== null) {
+      return res.send(il.ilceler);
+    } else {
+      return res.status(404).send();
+    }
+  } catch {
+    console.log("hata!!!!");
+  }
 });
 
 app.get("/getFilterWorkshop", async (req, res) => {
   try {
     const filter = {};
-    console.log("-- buradayim");
-    console.log(req.query);
 
     // City ve district filtresi
     if (req.query.city && req.query.district) {
@@ -481,6 +481,46 @@ app.post("/deleteWorkshop", async (req, res) => {
       }
     });
   } catch {}
+});
+
+app.get('/logout', function(req, res) {
+  req.session.destroy(function(err) {
+    if(err) {
+      console.log(err);
+    } else {
+    return res.status(202).json({message:"Basarıyla Cıkıs Yapıldı"})
+      
+    }
+  });
+});
+
+app.get('/user', (req, res) => {
+  try{
+    const user = req.session.user;
+    res.json(user);
+  }catch{
+   
+  }
+
+});
+
+app.get("/getWorkshopFilterCity", async (req,res) =>{
+  let city = req.query.city;
+  Workshop.find({"address.city":city}).then((result) =>{
+    res.send(result)
+  })
+})
+
+app.post("/userAddWorkshop", async (req,res) =>{
+    let email = req.body.email;
+    let workshopId = req.body.workshopId;
+    User.findOneAndUpdate({email: email}, {workshop: workshopId}, {new: true})
+    .then((user) => {
+      console.log(user);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 });
 
 app.listen(port, function () {

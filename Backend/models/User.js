@@ -6,7 +6,7 @@ const User = new mongoose.Schema({
   password: { type: String, require: true, maxLength: 25 },
   phone: {type: String, require:true},
   admin:{type:String, require:true, default:"0"},
-
+  workshop:{type:String,require:true, default:"null"}
 });
 
 module.exports = mongoose.model("User", User);

@@ -3,16 +3,60 @@ import { backendFetchGET, backendFetchPOST } from "../utils/backendFetch";
 import TableList from "../components/TableList";
 
 const AdminUsers = () => {
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [phone, setPhone] = useState("");
+  const [admin, setAdmin] = useState("");
   const [adminUsers, setAdminUsers] = useState([]);
   const [pageState, setPageState] = useState("table");
+  const [userEmail, setUserEmail] = useState("");
+  const [cities, setCities] = useState([]);
+  const [cityName, setCityName] = useState("");
+  const [workshopId,setWorkshopId] = useState("");
+  const [workshops, setWorkshops] = useState([]);
 
   useEffect(() => {
-    backendFetchGET("/getAdminUser", async (response) => {
+    backendFetchGET("/getUser", async (response) => {
       const data = await response.json();
       setAdminUsers(data);
       console.log(data);
     });
   }, []);
+
+  useEffect(() => {
+    backendFetchGET("/getCity", async (response) => {
+      const data = await response.json();
+      setCities(data);
+    });
+  }, []);
+
+  const ChangeCity = (event) => {
+    const selectedCity = event.target.value;
+    setCityName(selectedCity);
+   
+  };
+
+  const getWorkshopFilter = async () => {
+    if (cityName === "") return;
+    const queryParams = new URLSearchParams({ city: cityName });
+    backendFetchGET(
+      "/getWorkshopFilterCity?" + queryParams.toString(),
+      async (response) => {
+        if (response.status === 404) return;
+        const data = await response.json();
+        setWorkshops(data);
+      }
+    );
+  };
+
+  useEffect(() => {
+    getWorkshopFilter();
+  }, [cityName]);
+
+
+
+
 
   const columnNames = ["username", "email", "phone"];
 
@@ -25,8 +69,9 @@ const AdminUsers = () => {
   });
 
   const updateUser = (row) => {
-    console.log("kullanıcı guncellendi");
-    console.log(row);
+    setPageState("addWorkshop");
+    setUserEmail(row.email)
+    
   };
   const deleteUser = (row) => {
     backendFetchPOST("/deleteUser", { email: row.email }, async (response) => {
@@ -37,11 +82,7 @@ const AdminUsers = () => {
     setAdminUsers(newAdminUsers);
   };
 
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [phone, setPhone] = useState("");
-  const [admin, setAdmin] = useState("");
+  
 
   const UserAdd = () => {
     backendFetchPOST(
@@ -59,6 +100,12 @@ const AdminUsers = () => {
       }
     );
   };
+
+  const addWorkshop = () =>{
+      backendFetchPOST("/userAddWorkshop", {email:userEmail, workshopId:workshopId}, async (response) =>{
+        const data = await response.json();
+      })
+  }
 
   if (pageState === "table") {
     return (
@@ -85,7 +132,7 @@ const AdminUsers = () => {
         </div>
       </div>
     );
-  } else {
+  } else if(pageState ==="addUser") {
     return (
       <div className="admin-user-add">
         <button
@@ -124,13 +171,45 @@ const AdminUsers = () => {
             <option value="" disabled>
               Rol Seciniz
             </option>
-            <option value={"1"}>Admin</option>
+            <option value={"admin"}>Admin</option>
             <option value={"0"}>Kullanıcı</option>
           </select>
           <button onClick={UserAdd}>Kullanıcı Ekle</button>
         </div>
       </div>
     );
+  }else if(pageState === "addWorkshop"){
+    return(<div>
+      
+
+  <select onChange={ChangeCity} defaultValue={""}>
+  <option value="" disabled>
+    Sehir Seçiniz
+  </option>
+  {cities.map((city, index) => {
+    return (
+      <option key={index} value={city.ilAdi}>
+        {city.ilAdi}
+      </option>
+    );
+  })}
+</select>
+<select onChange={(event) =>setWorkshopId(event.target.value)} defaultValue={""}>
+  <option value="" disabled>
+    Workshop Seciniz
+  </option>
+  {workshops.map((workshop, index) => {
+    return (
+      <option key={index} value={workshop._id}>
+        {workshop.name}
+      </option>
+    );
+  })}
+</select>
+
+
+      <button onClick={addWorkshop}>Workshop ekle</button>
+    </div>)
   }
 };
 

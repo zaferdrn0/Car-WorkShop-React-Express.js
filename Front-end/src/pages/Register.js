@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Header from "../components/Header";
 import { useNavigate } from "react-router-dom";
 import "./css/Register.css";
+import { context } from "../context/UserControl";
 
 const Register = () => {
+  const { loggedIn, setLoggedIn } = useContext(context);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -28,6 +30,7 @@ const Register = () => {
     const result = await response.json();
     if (result.rota === "home") {
       navigate("/");
+      setLoggedIn(false)
     }
   };
 

@@ -111,3 +111,39 @@ border-radius: 30px;
   margin-right: 10px;
   font-size: 18px;
 }
+
+
+.home-notuser{
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.home-notuser .section-1{
+  display: flex;
+  background-color: rgba(40, 38, 41, 0.935);
+  justify-content: center;
+  text-align: center;
+  width: 50%;
+  
+
+}
+.home-notuser .section-1 .left{
+  padding-top: 50px;
+  color: white;
+}
+.home-notuser .section-1 .left h1{
+  padding-top: 20px;
+  
+}
+.home-notuser .section-1 .left p{
+  padding-bottom: 50px;
+  padding-top: 20px;
+}
+.home-notuser .section-1 .left a {
+  color: #6995dc;
+ 
+}
+.home-notuser .section-1 .left h2{
+  padding-bottom: 100px;
+}

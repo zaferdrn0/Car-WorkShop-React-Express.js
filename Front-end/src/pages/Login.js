@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./css/Login.css";
 import { backendFetchPOST } from "../utils/backendFetch";
+import { context } from "../context/UserControl"
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const {setLoggedIn} = useContext(context)
 
   const navigate = useNavigate();
 
@@ -16,6 +18,7 @@ const Login = () => {
       async (response) => {
         const result = await response.json();
         if (result.yonlendir === "1") {
+          setLoggedIn(true)
           navigate("/");
         }
       }

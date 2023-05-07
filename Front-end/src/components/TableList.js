@@ -50,6 +50,18 @@ const TableList = (props) => {
                       Güncelle
                     </button>
                   )}
+                  {props.onAbout !== undefined && (
+                    <button
+                      className="about"
+                      onClick={() => {
+                        props.onAbout(row);
+                      }}
+                      key="about"
+                      type="button"
+                    >
+                      About
+                    </button>
+                    )}
                 </td>
               </tr>
             </tbody>

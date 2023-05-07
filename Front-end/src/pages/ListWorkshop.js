@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { backendFetchGET } from "../utils/backendFetch";
 import BoxList from "../components/BoxList";
+import "./css/opps.css"
 
 const ListWorkshop = () => {
   const [workshop, setWorkshop] = useState([]);
@@ -57,17 +58,18 @@ const ListWorkshop = () => {
     );
   } else {
     return (
-      <div class="workshop-error-container">
+      <div className="workshop-error-container">
         <img
-          src="https://image.flaticon.com/icons/png/512/3439/3439543.png"
+          src="./images/Opps.png"
           alt="Opps!"
+          width="400px"
         />
         <h1>Opps! Uygun Servis Bulunamadı</h1>
         <p>
           Maalesef aradığınız özelliklere sahip bir servis bulunamadı. Lütfen
           daha sonra tekrar deneyin ya da bizi arayarak destek alın.
         </p>
-        <button>ANA SAYFAYA GERİ DÖN</button>
+       <a href="/"><button>ANA SAYFAYA GERİ DÖN</button></a> 
       </div>
     );
   }

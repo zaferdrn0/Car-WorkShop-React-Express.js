@@ -1,18 +1,17 @@
-import React, { useContext } from "react";
+import React, { useContext } from 'react'
 import "./css/adminHeader.css";
-import { backendFetchGET } from "../utils/backendFetch";
-import { useNavigate } from "react-router-dom";
+import { backendFetchGET } from '../utils/backendFetch';
+import { useNavigate } from 'react-router-dom';
 import { context } from "../context/UserControl";
-
-const AdminHeader = () => {
+const WorkshopAdminHeader = () => {
   const { setLoggedIn } = useContext(context);
   const navigate = useNavigate();
   const LogOut = () =>{
     backendFetchGET("/logout", async (response) =>{
       const data = await response.json();
       if(response.status === 202){
-        navigate("/");
-        setLoggedIn(false)
+       navigate("/")
+       setLoggedIn(false)
       }
     })
 
@@ -32,32 +31,18 @@ const AdminHeader = () => {
       <div className="panel">
         <ul>
           <li>
-            <a href="/admin/users">
+            <a href="/workshopadmin/users">
               <h4>Users</h4>
             </a>
           </li>
+         
           <li>
-            <a href="/admin/brands">
-              <h4>Car Brands</h4>{" "}
-            </a>
-          </li>
-          <li>
-            <a href="/admin/models">
-              <h4>Car Models</h4>
-            </a>
-          </li>
-          <li>
-            <a href="/admin/rtype">
-              <h4>Repair Type</h4>
-            </a>
-          </li>
-          <li>
-            <a href="/admin/workshops">
+            <a href="/workshopadmin/workshops">
               <h4>Workshops</h4>
             </a>
           </li>
           <li>
-            <a href="/admin/message">
+            <a href="/workshopadmin/message">
               <h4>Message</h4>
             </a>
           </li>
@@ -68,6 +53,6 @@ const AdminHeader = () => {
       </div>
     </div>
   );
-};
+}
 
-export default AdminHeader;
+export default WorkshopAdminHeader
