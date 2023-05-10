@@ -12,7 +12,9 @@ import AdminModels from "./admin/AdminModels";
 import AdminRepairType from "./admin/AdminRepairType";
 import AdminWorkshops from "./admin/AdminWorkshops";
 import WorkshopAdminLayout from "./Layout/WorkshopAdminLayout"
+import WorkshopUsers from "./workshopAdmin/WorkshopUsers";
 import { LoginProvider } from "./context/UserControl";
+import Workshop from "./pages/Workshop";
 
 function App() {
   return (
@@ -24,6 +26,7 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
             <Route path="/workshops" element={<ListWorkshop />} />
+            <Route path="/workshop" element = {<Workshop/>}/>
           </Route>
 
           <Route path="/admin/" element={<AdminLayout />}>
@@ -35,7 +38,9 @@ function App() {
             <Route path="workshops" element={<AdminWorkshops />} />
           </Route>
           <Route path="/workshopadmin" element = {<WorkshopAdminLayout/>}>
-          
+            <Route index element = {<WorkshopUsers/>}/>
+            <Route path="users" element = {<WorkshopUsers/>}/>
+            
           </Route>
         </Routes>
       </LoginProvider>

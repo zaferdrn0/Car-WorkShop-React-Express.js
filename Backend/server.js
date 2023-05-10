@@ -10,6 +10,7 @@ const Workshop = require("./models/Workshop");
 const Marka = require("./models/Car");
 const RepairType = require("./models/RepairType");
 const City = require("./models/Cities");
+const Comment = require("./models/Comment")
 const port = 4000;
 app.use(require("body-parser").json());
 

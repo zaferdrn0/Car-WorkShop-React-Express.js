@@ -39,6 +39,7 @@ const ListWorkshop = () => {
             {workshop.map((item) => (
               <BoxList
                 key={item._id}
+                id = {item._id}
                 name={item.name}
                 image={item.image}
                 address={

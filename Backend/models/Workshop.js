@@ -12,7 +12,8 @@ const Workshop = new mongoose.Schema({
     phone:{type:String, require:true},
     description:{type:String},
     brand:[{brand:String}],
-    maintenance : [{ad:String}]
+    maintenance : [{ad:String}],
+    workingHours:{type:String},
      
     
 });
