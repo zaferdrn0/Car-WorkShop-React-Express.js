@@ -57,7 +57,7 @@ const ListWorkshop = () => {
         </div>
       </div>
     );
-  } else {
+  } else if (workshop.length === 0) {
     return (
       <div className="workshop-error-container">
         <img
@@ -74,6 +74,7 @@ const ListWorkshop = () => {
       </div>
     );
   }
+  
 };
 
 export default ListWorkshop;

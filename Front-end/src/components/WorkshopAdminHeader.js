@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import "./css/adminHeader.css";
-import { backendFetchGET } from '../utils/backendFetch';
+import { backendFetchGET,  } from '../utils/backendFetch';
 import { useNavigate } from 'react-router-dom';
 import { context } from "../context/UserControl";
 const WorkshopAdminHeader = () => {
@@ -12,6 +12,7 @@ const WorkshopAdminHeader = () => {
       if(response.status === 202){
        navigate("/")
        setLoggedIn(false)
+       
       }
     })
 
@@ -37,7 +38,7 @@ const WorkshopAdminHeader = () => {
           </li>
          
           <li>
-            <a href="/workshopadmin/workshops">
+            <a href="/workshopadmin/workshopcontrol">
               <h4>Workshops</h4>
             </a>
           </li>

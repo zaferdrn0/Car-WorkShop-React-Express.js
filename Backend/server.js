@@ -10,7 +10,8 @@ const Workshop = require("./models/Workshop");
 const Marka = require("./models/Car");
 const RepairType = require("./models/RepairType");
 const City = require("./models/Cities");
-const Comment = require("./models/Comment")
+const Comment = require("./models/Comment");
+const Star = require("./models/Star");
 const port = 4000;
 app.use(require("body-parser").json());
 
@@ -71,7 +72,6 @@ app.post("/register", async (req, res) => {
     let email = req.body.email;
     let password = req.body.password;
     let phone = req.body.phone;
-
 
     await User.findOne({ email: email })
       .then((result) => {
@@ -282,7 +282,6 @@ app.post("/deleteModel", async (req, res) => {
   let model = req.body.model;
 
   Marka.findOne({ ad: marka }).then((result) => {
-
     const index = result.modeller.findIndex((opt) => opt.ad === model);
 
     if (index !== -1) {
@@ -484,38 +483,39 @@ app.post("/deleteWorkshop", async (req, res) => {
   } catch {}
 });
 
-app.get('/logout', function(req, res) {
-  req.session.destroy(function(err) {
-    if(err) {
+app.get("/logout", function (req, res) {
+  req.session.destroy(function (err) {
+    if (err) {
       console.log(err);
     } else {
-    return res.status(202).json({message:"Basarıyla Cıkıs Yapıldı"})
-      
+      return res.status(202).json({ message: "Basarıyla Cıkıs Yapıldı" });
     }
   });
 });
 
-app.get('/user', (req, res) => {
-  try{
+app.get("/user", (req, res) => {
+  try {
     const user = req.session.user;
+ 
     res.json(user);
-  }catch{
-   
-  }
-
+  } catch {}
 });
 
-app.get("/getWorkshopFilterCity", async (req,res) =>{
+app.get("/getWorkshopFilterCity", async (req, res) => {
   let city = req.query.city;
-  Workshop.find({"address.city":city}).then((result) =>{
-    res.send(result)
-  })
-})
+  Workshop.find({ "address.city": city }).then((result) => {
+    res.send(result);
+  });
+});
 
-app.post("/userAddWorkshop", async (req,res) =>{
-    let email = req.body.email;
-    let workshopId = req.body.workshopId;
-    User.findOneAndUpdate({email: email}, {workshop: workshopId}, {new: true})
+app.post("/userAddWorkshop", async (req, res) => {
+  let email = req.body.email;
+  let workshopId = req.body.workshopId;
+  User.findOneAndUpdate(
+    { email: email },
+    { workshop: workshopId },
+    { new: true }
+  )
     .then((user) => {
       console.log(user);
     })
@@ -523,6 +523,126 @@ app.post("/userAddWorkshop", async (req,res) =>{
       console.log(error);
     });
 });
+
+app.post("/addComment", async (req, res) => {
+  try {
+    let userId = req.session.user.username;
+    let comment = req.body.comment;
+    let workshopId = req.body.workshopId;
+
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = (currentDate.getMonth() + 1).toString().padStart(2, "0");
+    const day = currentDate.getDate().toString().padStart(2, "0");
+
+    let commentControl = comment.trim();
+    if (commentControl.length !== 0) {
+      if (comment !== "") {
+        const newComment = new Comment({
+          workshop: workshopId,
+          user: userId,
+          comment: comment,
+          date: year + "-" + month + "-" + day,
+        });
+        await newComment.save();
+        return res.send({
+          comment: newComment,
+          message: "Yorumunuz Başarıyla Yazıldı",
+        });
+      } else {
+        return res.send({ message: "Yorum yazınız" });
+      }
+    } else {
+      return res.send({ message: "Yanlış yorum girdiniz" });
+    }
+  } catch {
+    console.log("hata aldım");
+  }
+});
+
+app.get("/getComment", async (req, res) => {
+  let workshopId = req.query.id;
+  await Comment.find({ workshop: workshopId })
+    .then((result) => {
+      if (result.length === 0) {
+      } else {
+        let reversedArr = [];
+          for (let i = result.length-1; i>=0;i--){
+            reversedArr.push(result[i]);
+          }
+        return res.send(reversedArr);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+app.post("/userUpdateWorkshop", async (req, res) => {
+  const workshopId = req.session.user.workshop;
+
+  Workshop.findByIdAndUpdate(
+    workshopId,
+    {
+      "address.description": req.body.addressDescription,
+      phone: req.body.phone,
+      description: req.body.description,
+      workingHours: {
+        start: req.body.worktimeStart,
+        end: req.body.worktimeEnd,
+      },
+    },
+    { new: true }
+  )
+    .then((updatedWorkshop) => {
+      console.log("Güncellenen Workshop:", updatedWorkshop);
+    })
+    .catch((err) => {
+      console.error("Hata:", err);
+    });
+});
+
+app.post("/addStar", async (req, res) => {
+  let workshopId = req.body.id;
+  let star = req.body.rating;
+  let userId = req.session.user._id.toString();
+
+
+
+  try {
+    const stars = await Star.find({ workshop: workshopId });
+    const userStar = await stars.find((star) => star.user === userId);
+
+    if (!userStar) {
+      const newStar = new Star({
+        workshop: workshopId,
+        user: userId,
+        star: star,
+      });
+      newStar.save();
+      return res.send({ message: "basarıyla kayıt oldu", data:"1" });
+    } else {
+      userStar.star = star;
+      await userStar.save();
+
+      return res.send({ message: "guncellendi" , data:"1"});
+    }
+
+    // Diğer işlemler...
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+app.get("/getStar", async (req,res) =>{
+  let id = req.query.id;
+  
+  const stars = await Star.find({ workshop: id});
+  const starValues = stars.map(star => parseInt(star.star));
+  return res.send(starValues)
+ 
+})
 
 app.listen(port, function () {
   console.log(`Server running at ${port}/`);

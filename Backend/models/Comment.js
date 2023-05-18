@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
         workshop:{type:String},
         user:{type:String},
         comment:{type:String},
+        date:{type:String}
     })
 
     module.exports = mongoose.model("Comment",Comment);

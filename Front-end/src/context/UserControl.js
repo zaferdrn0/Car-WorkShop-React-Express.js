@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import { backendFetchGET } from "../utils/backendFetch";
+import React from 'react';
 
 export const context = createContext();
 

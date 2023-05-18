@@ -2,31 +2,41 @@ import React, { useContext, useEffect, useState } from "react";
 import "./css/header.css";
 import { context } from "../context/UserControl";
 import { backendFetchGET } from "../utils/backendFetch";
+import { useNavigate } from "react-router-dom";
 
 const Header = (props) => {
   const { loggedIn, setLoggedIn } = useContext(context);
   const [admin, setAdmin] = useState("");
   const [workshopControl, setWorkshopControl] = useState("")
+  const navigate = useNavigate();
   
   const LogOut = () =>{
       backendFetchGET("/logout", async (response) =>{
         const data = await response.json();
         if(response.status === 202){
           setLoggedIn(false)
+          navigate("/")
         }
       })
 
   }
   useEffect(() =>{
     backendFetchGET("/user", async (response) =>{
-      const data = await response.json();
-      console.log(data.workshop)
+    try{
+      const data = await response.json()
+      
+      
+      
         if(data.admin === "admin"){
           setAdmin("admin")
         }
         if(data.workshop !== "null"){
           setWorkshopControl("workshop")
         }
+    }catch(err){
+      console.log(err)
+    }
+      
     })
   },[loggedIn])
 

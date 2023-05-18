@@ -15,6 +15,8 @@ import WorkshopAdminLayout from "./Layout/WorkshopAdminLayout"
 import WorkshopUsers from "./workshopAdmin/WorkshopUsers";
 import { LoginProvider } from "./context/UserControl";
 import Workshop from "./pages/Workshop";
+import WorkshopEdit from "./workshopAdmin/WorkshopEdit";
+import React from 'react';
 
 function App() {
   return (
@@ -40,6 +42,7 @@ function App() {
           <Route path="/workshopadmin" element = {<WorkshopAdminLayout/>}>
             <Route index element = {<WorkshopUsers/>}/>
             <Route path="users" element = {<WorkshopUsers/>}/>
+            <Route path="workshopcontrol" element = {<WorkshopEdit/>}/>
             
           </Route>
         </Routes>
