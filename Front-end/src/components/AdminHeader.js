@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import "./css/adminHeader.css";
 import { backendFetchGET } from "../utils/backendFetch";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { context } from "../context/UserControl";
 
 const AdminHeader = () => {
@@ -20,9 +20,9 @@ const AdminHeader = () => {
   return (
     <div className="admin-left-header">
       <div className="admin-logo">
-        <a href="/">
+        <Link to="/">
           <img alt="" src="/images/logo.png" />
-        </a>
+        </Link>
       </div>
       <div className="admin-person">
         <h4>Zafer Duran</h4>
@@ -32,34 +32,39 @@ const AdminHeader = () => {
       <div className="panel">
         <ul>
           <li>
-            <a href="/admin/users">
+            <Link to="/admin/users">
               <h4>Users</h4>
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="/admin/brands">
+            <Link to="/admin/brands">
               <h4>Car Brands</h4>{" "}
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="/admin/models">
+            <Link to="/admin/models">
               <h4>Car Models</h4>
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="/admin/rtype">
+            <Link to="/admin/rtype">
               <h4>Repair Type</h4>
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="/admin/workshops">
+            <Link to="/admin/workshops">
               <h4>Workshops</h4>
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="/admin/message">
+            <Link to="/admin/gasstation">
+              <h4>Gas Station</h4>
+            </Link>
+          </li>
+          <li>
+            <Link to="/admin/message">
               <h4>Message</h4>
-            </a>
+            </Link>
           </li>
         </ul>
       </div>

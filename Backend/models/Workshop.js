@@ -15,6 +15,8 @@ const Workshop = new mongoose.Schema({
   brand: [{ brand: String }],
   maintenance: [{ ad: String }],
   workingHours: { start: { type: String }, end: { type: String } },
+  email:{type:String},
+  website:{type:String},
 });
 
 module.exports = mongoose.model("Workshop", Workshop);

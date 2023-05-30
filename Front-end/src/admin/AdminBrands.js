@@ -12,7 +12,7 @@ const AdminBrands = () => {
       await backendFetchGET("/getMarka", async (response) => {
         const data = await response.json();
         setBrand(data);
-        console.log(data);
+        
       });
     };
     getMarka();

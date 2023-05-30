@@ -38,6 +38,7 @@ const StarRating = (props) => {
         readOnly = {disable}
         precision={0.5}
         onChange={(event) => {
+          setRating(event.target.value)
           onChange(event.target.value,isVoted); 
           setIsVoted(true)
         }}

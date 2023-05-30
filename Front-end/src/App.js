@@ -17,6 +17,10 @@ import { LoginProvider } from "./context/UserControl";
 import Workshop from "./pages/Workshop";
 import WorkshopEdit from "./workshopAdmin/WorkshopEdit";
 import React from 'react';
+import FuelAccount from "./pages/FuelAccount";
+import AdminGasStation from "./admin/AdminGasStation";
+import FuelAdd from "./pages/FuelAdd";
+import FuelDetail from "./pages/FuelDetail";
 
 function App() {
   return (
@@ -29,6 +33,9 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/workshops" element={<ListWorkshop />} />
             <Route path="/workshop" element = {<Workshop/>}/>
+            <Route path="/fuelaccount" element = {<FuelAccount/>}/>
+            <Route path="/fueladd" element = {<FuelAdd/>}/>
+            <Route path="/fueldetails" element ={<FuelDetail/>}/>
           </Route>
 
           <Route path="/admin/" element={<AdminLayout />}>
@@ -38,9 +45,10 @@ function App() {
             <Route path="models" element={<AdminModels />} />
             <Route path="rtype" element={<AdminRepairType />} />
             <Route path="workshops" element={<AdminWorkshops />} />
+            <Route path="gasstation" element={<AdminGasStation/>}/>
           </Route>
           <Route path="/workshopadmin" element = {<WorkshopAdminLayout/>}>
-            <Route index element = {<WorkshopUsers/>}/>
+            <Route index element = {<WorkshopEdit/>}/>
             <Route path="users" element = {<WorkshopUsers/>}/>
             <Route path="workshopcontrol" element = {<WorkshopEdit/>}/>
             

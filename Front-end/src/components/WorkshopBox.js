@@ -78,7 +78,8 @@ const WorkshopBox = (props) => {
 
             onChange = { (newRating, isAlreadyVoted) =>{setStars((prevState) => {
               let toReturn = [...prevState]
-              isAlreadyVoted ? toReturn[toReturn.length - 1] = parseFloat(newRating) : toReturn.push(parseFloat(newRating))
+              isAlreadyVoted ? toReturn[toReturn.length - 2] = parseFloat(newRating) : toReturn.push(parseFloat(newRating))
+              console.log(toReturn)
               return toReturn;
             })}}/>
           </div>
@@ -106,7 +107,7 @@ const WorkshopBox = (props) => {
               <h3>Telefon : {workshop.phone}</h3>
               <h3>Eposta : {workshop.email} </h3>
               <h3>
-                <a href="#">Web Site</a>
+                <a href={workshop.website}>Web Site</a>
               </h3>
               </div>
            

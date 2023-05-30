@@ -1,0 +1,28 @@
+.fuel-account{
+   margin: 50px;
+   display: flex;
+   justify-content: center;
+    
+}
+
+.fuel-account-container{
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(255, 255, 255);
+    justify-content: center;
+    align-items: center;
+    color: #000;
+    border-radius: 20px;
+    min-width: 850px;
+    width: 1000px;
+   
+}
+
+.fuel-account-container .fuel-account-comboboxs{
+    margin-bottom: 50px;
+    margin-top: 50px;
+    
+}
+.fuel-account-container .fuel-account-inputs{
+    margin-bottom: 50px;
+}

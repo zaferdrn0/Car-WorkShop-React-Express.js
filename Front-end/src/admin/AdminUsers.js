@@ -20,7 +20,7 @@ const AdminUsers = () => {
     backendFetchGET("/getUser", async (response) => {
       const data = await response.json();
       setAdminUsers(data);
-      console.log(data);
+  
     });
   }, []);
 

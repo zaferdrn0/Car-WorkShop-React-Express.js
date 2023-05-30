@@ -12,7 +12,7 @@ const AdminRepairType = () => {
       backendFetchGET("/getRType", async (response) => {
         const data = await response.json();
         setRtypes(data);
-        console.log(data);
+  
       });
     };
     getRtype();

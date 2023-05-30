@@ -12,6 +12,10 @@ const RepairType = require("./models/RepairType");
 const City = require("./models/Cities");
 const Comment = require("./models/Comment");
 const Star = require("./models/Star");
+const GasBrand = require("./models/GasBrand");
+const GasStation = require("./models/GasStation");
+const Fuels = require("./models/Fuels");
+const UserFuel = require("./models/UserFuel");
 const port = 4000;
 app.use(require("body-parser").json());
 
@@ -235,7 +239,7 @@ app.get("/reqUserLogin", async (req, res) => {
     return res.status(200).send(JSON.stringify({ rota: "session" }));
   } else {
     // eger kullanıcı giriş yapmadıysa logine yönlendir.
-    console.log("login");
+
     return res.status(200).send(JSON.stringify({ rota: "login" }));
   }
 });
@@ -360,19 +364,17 @@ app.get("/getworkshop", async (req, res) => {
     console.log("hataaaa");
   }
 });
-// get admin users
+// get  users
 app.get("/getUser", async (req, res) => {
   User.find({}).then((result) => {
     if (result) {
       return res.send(result);
     } else {
-      return res.send(
-        JSON.stringify({ message: "admin kullanıcısı bulunamadı" })
-      );
+      return res.send(JSON.stringify({ message: "Kullanıcı Bulunamadı" }));
     }
   });
 });
-// get admin users
+// get  users
 app.get("/adminCheck", async (req, res) => {
   let user = req.session.user;
   if (user) {
@@ -496,7 +498,8 @@ app.get("/logout", function (req, res) {
 app.get("/user", (req, res) => {
   try {
     const user = req.session.user;
- 
+
+    if (!user) return res.status(400).send();
     res.json(user);
   } catch {}
 });
@@ -522,6 +525,14 @@ app.post("/userAddWorkshop", async (req, res) => {
     .catch((error) => {
       console.log(error);
     });
+});
+
+app.get("/getUserWorkshop", async (req, res) => {
+  try {
+    workshopId = req.session.user.workshop;
+    let workshop = await Workshop.findOne({ _id: workshopId });
+    return res.send(workshop);
+  } catch {}
 });
 
 app.post("/addComment", async (req, res) => {
@@ -567,9 +578,9 @@ app.get("/getComment", async (req, res) => {
       if (result.length === 0) {
       } else {
         let reversedArr = [];
-          for (let i = result.length-1; i>=0;i--){
-            reversedArr.push(result[i]);
-          }
+        for (let i = result.length - 1; i >= 0; i--) {
+          reversedArr.push(result[i]);
+        }
         return res.send(reversedArr);
       }
     })
@@ -607,8 +618,6 @@ app.post("/addStar", async (req, res) => {
   let star = req.body.rating;
   let userId = req.session.user._id.toString();
 
-
-
   try {
     const stars = await Star.find({ workshop: workshopId });
     const userStar = await stars.find((star) => star.user === userId);
@@ -620,12 +629,12 @@ app.post("/addStar", async (req, res) => {
         star: star,
       });
       newStar.save();
-      return res.send({ message: "basarıyla kayıt oldu", data:"1" });
+      return res.send({ message: "basarıyla kayıt oldu", data: "1" });
     } else {
       userStar.star = star;
       await userStar.save();
 
-      return res.send({ message: "guncellendi" , data:"1"});
+      return res.send({ message: "guncellendi", data: "1" });
     }
 
     // Diğer işlemler...
@@ -635,14 +644,142 @@ app.post("/addStar", async (req, res) => {
   }
 });
 
-app.get("/getStar", async (req,res) =>{
+app.get("/getStar", async (req, res) => {
   let id = req.query.id;
-  
-  const stars = await Star.find({ workshop: id});
-  const starValues = stars.map(star => parseInt(star.star));
-  return res.send(starValues)
- 
-})
+
+  const stars = await Star.find({ workshop: id });
+  const starValues = stars.map((star) => parseInt(star.star));
+  return res.send(starValues);
+});
+
+app.post("/addStationBrand", async (req, res) => {
+  let brand = req.body.brand;
+  try {
+    const result = await GasBrand.findOne({ ad: brand });
+    if (result) {
+      return res.status(400).json({ message: "Bu Marka Kayıtlı" });
+    } else {
+      const newBrand = new GasBrand({
+        ad: brand,
+      });
+      await newBrand.save();
+      return res.status(200).json({ message: "Basarıyla Kayıt Oldu" });
+    }
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Bir şeyler yanlış gitti." });
+  }
+});
+app.get("/getStationBrand", async (req, res) => {
+  try {
+    let brands = await GasBrand.find({});
+    return res.send(brands);
+  } catch {
+    console.log("error");
+  }
+});
+
+app.post("/addGasStation", async (req, res) => {
+  try {
+    let stationBrand = req.body.stationBrand;
+    let cityName = req.body.cityName;
+    let districtName = req.body.districtName;
+    let stationName = req.body.stationName;
+
+    const newGasStation = new GasStation({
+      ad: stationName,
+      brand: stationBrand,
+      address: {
+        city: cityName,
+        district: districtName,
+      },
+    });
+    await newGasStation.save();
+    return res.status(200).send({ message: "Basarıyla kayıt edildi" });
+  } catch {
+    console.log("error");
+  }
+});
+
+app.get("/getGasStation", async (req, res) => {
+  try {
+    let station = await GasStation.find({});
+    console.log(station);
+    return res.send(station);
+  } catch {
+    console.log("error");
+  }
+});
+
+app.get("/getFilterGasStation", async (req, res) => {
+  try {
+    let city = req.query.city;
+    let brand = req.query.brand;
+
+    const data = await GasStation.find({ "address.city": city, brand: brand });
+    if (!data || data.length === 0) {
+      res.status(400).send();
+    } else {
+      res.status(200).json(data);
+    }
+  } catch {
+    console.log("error");
+  }
+});
+
+app.post("/addFuels", async (req, res) => {
+  let fuel = req.body.fuel;
+  let data = await Fuels.findOne({ ad: fuel });
+  if (data) {
+    return res.status(400).send();
+  } else {
+    const newFuel = new Fuels({
+      ad: fuel,
+    });
+    newFuel.save();
+    return res.status(200).send({ message: "basarıyla kayıt yapıldı" });
+  }
+});
+
+app.get("/getFuels", async (req, res) => {
+  let data = await Fuels.find({});
+  if (data.length !== 0) {
+    return res.status(200).send(data);
+  } else {
+    return res.status(400).send({ message: "Fuel yok" });
+  }
+});
+
+app.post("/addUserFuel", async (req, res) => {
+  try {
+    let user = req.session.user._id.toString();
+    let fuelStationId = req.body.fuelStationId;
+    let fuelType = req.body.fuelType;
+    let stationBrand = req.body.stationBrand;
+    let distance = req.body.distance;
+    let fuelLiter = req.body.fuelliter;
+    let fuelPrice = req.body.fuelPrice;
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = (currentDate.getMonth() + 1).toString().padStart(2, "0");
+    const day = currentDate.getDate().toString().padStart(2, "0");
+
+    const newFuel = new UserFuel({
+      userid: user,
+      fuelstationid: fuelStationId,
+      fueltype: fuelType,
+      stationbrand: stationBrand,
+      distance: distance,
+      fuelliter: fuelLiter,
+      fuelprice: fuelPrice,
+      date: year + "-" + month + "-" + day,
+    });
+    await newFuel.save();
+    return res.status(200).send({ message: "Basarıyla kayıt yapıldı" });
+  } catch {
+    return res.status(404).send();
+  }
+});
 
 app.listen(port, function () {
   console.log(`Server running at ${port}/`);

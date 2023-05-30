@@ -31,6 +31,7 @@ const AdminModels = () => {
       backendFetchGET(
         "/getModel?" + queryParams.toString(),
         async (response) => {
+          if(response.status ===404) return 
           const data = await response.json();
           setModels(data);
           console.log(data);

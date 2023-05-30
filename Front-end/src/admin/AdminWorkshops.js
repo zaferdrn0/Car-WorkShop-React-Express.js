@@ -35,7 +35,6 @@ const AdminWorkshops = () => {
     backendFetchGET("/getRType", async (response) => {
       const data = await response.json();
       setRepairTypes(data);
-      console.log(data);
     });
   };
 
@@ -43,14 +42,6 @@ const AdminWorkshops = () => {
     const selectedBrand = event.target.value;
     setBrand(selectedBrand);
   };
-
-  /* const queryParams = new URLSearchParams({ marka: brand });
-  const getModels = async () => {
-    backendFetchGET("/getModel?" + queryParams.toString(), async (response) => {
-      const data = await response.json();
-      setModels(data);
-    });
-  }; */
 
   useEffect(() => {
     getBrands();
@@ -92,7 +83,6 @@ const AdminWorkshops = () => {
       backendFetchGET("/getWorkshops", async (response) => {
         const data = await response.json();
         setWorkshops(data);
-        console.log(data);
       });
     };
     getWorkshop();
@@ -145,8 +135,6 @@ const AdminWorkshops = () => {
     let path = image;
     let uzantı = path.split("\\");
     let images = uzantı[2];
-
-    
 
     backendFetchPOST(
       "/addWorkshop",

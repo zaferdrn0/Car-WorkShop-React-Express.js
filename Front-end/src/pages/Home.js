@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./css/Home.css";
 import { backendFetchGET, backendFetchPOST } from "../utils/backendFetch";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { context } from "../context/UserControl";
 
 const Home = () => {
@@ -203,7 +203,7 @@ const Home = () => {
               guvenilir bir şekilde aracınızı tamir ettirmenize olanak
               sağlıyoruz...
             </p>
-                <h2>Servis Bulmak İçin <a href="/login">Tıklayınız</a></h2>
+                <h2>Servis Bulmak İçin <Link to="/login">Tıklayınız</Link></h2>
               </div>
              
           </div>
