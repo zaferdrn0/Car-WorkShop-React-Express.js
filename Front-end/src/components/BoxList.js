@@ -44,7 +44,7 @@ const BoxList = (props) => {
 
   return (
     <div className="workshop-list-box">
-      <img src={`/images/${image}`} alt="Ürün Resmi" />
+      <img src={`/images/${image[0]}`} alt="Ürün Resmi" />
       <h2>{name}</h2>
       <p> {description} </p>
       <address>{address}</address>

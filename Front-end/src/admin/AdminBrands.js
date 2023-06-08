@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { backendFetchGET, backendFetchPOST } from "../utils/backendFetch";
 import TableList from "../components/TableList";
+import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 
 const AdminBrands = () => {
   const [brand, setBrand] = useState([]);
@@ -12,7 +13,6 @@ const AdminBrands = () => {
       await backendFetchGET("/getMarka", async (response) => {
         const data = await response.json();
         setBrand(data);
-        
       });
     };
     getMarka();
@@ -73,22 +73,38 @@ const AdminBrands = () => {
     );
   } else {
     return (
-      <div className="add-admin-brand">
-        <button
+      <Grid>
+        <Button
+          variant="contained"
           onClick={() => {
             setPageState("table");
           }}
         >
           geri don
-        </button>
-        <div>
-          <input
+        </Button>
+
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Typography mb={2} variant="h4">
+            Brand Add
+          </Typography>
+          <TextField
+            id="outlined-basic"
+            label="Brand"
+            variant="outlined"
             onChange={(event) => setbrandSet(event.target.value)}
-            placeholder="Marka Giriniz"
           />
-          <button onClick={AddBrand}>Ekle</button>
-        </div>
-      </div>
+          <Button sx={{ marginTop: 3 }} variant="contained" onClick={AddBrand}>
+            Ekle
+          </Button>
+        </Box>
+      </Grid>
     );
   }
 };

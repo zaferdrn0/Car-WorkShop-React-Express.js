@@ -1,6 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { backendFetchGET, backendFetchPOST } from "../utils/backendFetch";
 import TableList from "../components/TableList";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import {
+  Box,
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select,
+  Typography,
+} from "@mui/material";
 
 const AdminUsers = () => {
   const [username, setUsername] = useState("");
@@ -13,14 +24,13 @@ const AdminUsers = () => {
   const [userEmail, setUserEmail] = useState("");
   const [cities, setCities] = useState([]);
   const [cityName, setCityName] = useState("");
-  const [workshopId,setWorkshopId] = useState("");
+  const [workshopId, setWorkshopId] = useState("");
   const [workshops, setWorkshops] = useState([]);
 
   useEffect(() => {
     backendFetchGET("/getUser", async (response) => {
       const data = await response.json();
       setAdminUsers(data);
-  
     });
   }, []);
 
@@ -34,7 +44,6 @@ const AdminUsers = () => {
   const ChangeCity = (event) => {
     const selectedCity = event.target.value;
     setCityName(selectedCity);
-   
   };
 
   const getWorkshopFilter = async () => {
@@ -54,10 +63,6 @@ const AdminUsers = () => {
     getWorkshopFilter();
   }, [cityName]);
 
-
-
-
-
   const columnNames = ["username", "email", "phone"];
 
   const rowValues = adminUsers.map((user) => {
@@ -70,8 +75,7 @@ const AdminUsers = () => {
 
   const updateUser = (row) => {
     setPageState("addWorkshop");
-    setUserEmail(row.email)
-    
+    setUserEmail(row.email);
   };
   const deleteUser = (row) => {
     backendFetchPOST("/deleteUser", { email: row.email }, async (response) => {
@@ -81,8 +85,6 @@ const AdminUsers = () => {
     const newAdminUsers = adminUsers.filter((user) => user.email !== row.email);
     setAdminUsers(newAdminUsers);
   };
-
-  
 
   const UserAdd = () => {
     backendFetchPOST(
@@ -101,11 +103,15 @@ const AdminUsers = () => {
     );
   };
 
-  const addWorkshop = () =>{
-      backendFetchPOST("/userAddWorkshop", {email:userEmail, workshopId:workshopId}, async (response) =>{
+  const addWorkshop = () => {
+    backendFetchPOST(
+      "/userAddWorkshop",
+      { email: userEmail, workshopId: workshopId },
+      async (response) => {
         const data = await response.json();
-      })
-  }
+      }
+    );
+  };
 
   if (pageState === "table") {
     return (
@@ -132,84 +138,197 @@ const AdminUsers = () => {
         </div>
       </div>
     );
-  } else if(pageState ==="addUser") {
+  } else if (pageState === "addUser") {
     return (
-      <div className="admin-user-add">
-        <button
-          onClick={() => {
-            setPageState("table");
+      <Grid
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "right",
+            alignItems: "center",
+            mb: 5,
           }}
         >
-          geri don
-        </button>
-        <div>
-          <p>kullanıcı ekleniyor burada</p>
-          <input
-            onChange={(event) => setUsername(event.target.value)}
-            type="text"
-            placeholder="Username"
-          />
-          <input
-            onChange={(event) => setEmail(event.target.value)}
-            type="text"
-            placeholder="Email"
-          />
-          <input
-            onChange={(event) => setPassword(event.target.value)}
-            type="password"
-            placeholder="Password"
-          />
-          <input
-            onChange={(event) => setPhone(event.target.value)}
-            type="text"
-            placeholder="Phone"
-          />
-          <select
-            defaultValue={""}
-            onChange={(event) => setAdmin(event.target.value)}
+          <Button
+            variant="contained"
+            onClick={() => {
+              setPageState("table");
+            }}
           >
-            <option value="" disabled>
-              Rol Seciniz
-            </option>
-            <option value={"admin"}>Admin</option>
-            <option value={"0"}>Kullanıcı</option>
-          </select>
-          <button onClick={UserAdd}>Kullanıcı Ekle</button>
-        </div>
-      </div>
-    );
-  }else if(pageState === "addWorkshop"){
-    return(<div>
-      
+            geri don
+          </Button>
+        </Box>
 
-  <select onChange={ChangeCity} defaultValue={""}>
-  <option value="" disabled>
-    Sehir Seçiniz
-  </option>
-  {cities.map((city, index) => {
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Typography variant="h4" mb={5}>
+            Add User
+          </Typography>
+          <TextField
+            onChange={(event) => setUsername(event.target.value)}
+            id="outlined-basic"
+            label="Username"
+            variant="outlined"
+            sx={{ marginBottom: "10px" }}
+          />
+
+          <TextField
+            onChange={(event) => setEmail(event.target.value)}
+            id="outlined-basic"
+            label="Email"
+            variant="outlined"
+            sx={{ marginBottom: "10px" }}
+          />
+
+          <TextField
+            onChange={(event) => setPassword(event.target.value)}
+            id="outlined-basic"
+            label="Password"
+            variant="outlined"
+            sx={{ marginBottom: "10px" }}
+          />
+
+          <TextField
+            onChange={(event) => setPhone(event.target.value)}
+            id="outlined-basic"
+            label="Phone"
+            variant="outlined"
+            sx={{ marginBottom: "10px" }}
+          />
+
+          <FormControl sx={{ m: 1, minWidth: 80 }}>
+            <InputLabel id="demo-simple-select-autowidth-label">Rol</InputLabel>
+            <Select
+              labelId="demo-simple-select-autowidth-label"
+              id="demo-simple-select-autowidth"
+              value={admin}
+              onChange={(event) => setAdmin(event.target.value)}
+              autoWidth
+              label="Age"
+              sx={{ marginBottom: "20px" }}
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              <MenuItem value={"admin"}>Admin</MenuItem>
+              <MenuItem value={"0"}>Kullanıcı</MenuItem>
+            </Select>
+          </FormControl>
+          <Button variant="contained" onClick={UserAdd}>
+            Add User
+          </Button>
+        </Box>
+      </Grid>
+    );
+  } else if (pageState === "addWorkshop") {
     return (
-      <option key={index} value={city.ilAdi}>
-        {city.ilAdi}
-      </option>
-    );
-  })}
-</select>
-<select onChange={(event) =>setWorkshopId(event.target.value)} defaultValue={""}>
-  <option value="" disabled>
-    Workshop Seciniz
-  </option>
-  {workshops.map((workshop, index) => {
-    return (
-      <option key={index} value={workshop._id}>
-        {workshop.name}
-      </option>
-    );
-  })}
-</select>
+      <Grid>
+        {/* <select onChange={ChangeCity} defaultValue={""}>
+          <option value="" disabled>
+            Sehir Seçiniz
+          </option>
+          {cities.map((city, index) => {
+            return (
+              <option key={index} value={city.ilAdi}>
+                {city.ilAdi}
+              </option>
+            );
+          })}
+        </select> */}
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Typography variant="h4" mb={5}>Workshop Add User</Typography>
+          <FormControl sx={{ m: 1, minWidth: 180 }}>
+            <InputLabel id="demo-simple-select-autowidth-label">
+              City Select
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-autowidth-label"
+              id="demo-simple-select-autowidth"
+              value={cityName}
+              onChange={ChangeCity}
+              autoWidth
+              label="City Select"
+              sx={{ marginBottom: "20px" }}
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              {cities.map((city, index) => {
+                return (
+                  <MenuItem key={index} value={city.ilAdi}>
+                    {city.ilAdi}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
 
+          {/* <select
+          onChange={(event) => setWorkshopId(event.target.value)}
+          defaultValue={""}
+        >
+          <option value="" disabled>
+            Workshop Seciniz
+          </option>
+          {workshops.map((workshop, index) => {
+            return (
+              <option key={index} value={workshop._id}>
+                {workshop.name}
+              </option>
+            );
+          })}
+        </select> */}
+          <FormControl sx={{ m: 1, minWidth: 180 }}>
+            <InputLabel id="demo-simple-select-autowidth-label">
+              Workshop Select
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-autowidth-label"
+              id="demo-simple-select-autowidth"
+              value={workshopId}
+              onChange={(event) => setWorkshopId(event.target.value)}
+              autoWidth
+              label="Workshop Select"
+              sx={{ marginBottom: "20px" }}
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              {workshops.map((workshop, index) => {
+                return (
+                  <MenuItem key={index} value={workshop._id}>
+                    {workshop.name}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
 
-      <button onClick={addWorkshop}>Workshop ekle</button>
-    </div>)
+          <Button variant="contained" onClick={addWorkshop}>
+            Add User Workshop
+          </Button>
+        </Box>
+      </Grid>
+    );
   }
 };
 

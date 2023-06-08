@@ -9,7 +9,7 @@ const Workshop = new mongoose.Schema({
     address: { type: String },
     description: { type: String },
   },
-  image: { type: String },
+  image:[{ type: String }],
   phone: { type: String, require: true },
   description: { type: String },
   brand: [{ brand: String }],

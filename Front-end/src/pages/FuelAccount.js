@@ -19,13 +19,13 @@ const FuelAccount = () => {
         if (total !== "" && liter === "") {
           if (!isNaN(parseFloat(total)) && !isNaN(parseFloat(distance))) {
             fiyat = parseFloat(total) / parseFloat(distance);
-            result = `Aracınız Km de ${fiyat} Tl yakmaktadır.`
+            result = `Aracınız Km de ${fiyat.toFixed(2)} Tl yakmaktadır.`
           }
         } else if (total === "" && liter !== "") {
           if (!isNaN(parseFloat(liter)) && !isNaN(parseFloat(distance))) {
             let road = parseFloat(distance) / 100;
             litre = parseFloat(liter) / road;
-            result = `Aracınız 100Km de ${litre} litre yakıt  yakmaktadır.`
+            result = `Aracınız 100Km de ${litre.toFixed(2)} litre yakıt  yakmaktadır.`
           }
         } else {
           if (!isNaN(parseFloat(liter)) && !isNaN(parseFloat(distance))) {
@@ -35,7 +35,7 @@ const FuelAccount = () => {
           if (!isNaN(parseFloat(total)) && !isNaN(parseFloat(distance))) {
             fiyat = parseFloat(total) / parseFloat(distance);
           }
-          result = `Aracınız km de = ${fiyat} Tl ve 100 km de = ${litre} litre yakıt yakmaktadır`
+          result = `Aracınız km de = ${fiyat.toFixed(2)} Tl ve 100 km de = ${litre.toFixed(2)} litre yakıt yakmaktadır`
         }
       } else {
         console.log("ikisi de bos");

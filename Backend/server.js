@@ -464,7 +464,19 @@ app.get("/getFilterWorkshop", async (req, res) => {
     }
 
     // Veritabanından kayıtları filtreleyin
-    const workshops = await Workshop.find(filter);
+    let workshops = await Workshop.find(filter).lean();
+
+    const workshopIds = workshops.map((workshop) => workshop._id);
+    const ratings = await Star.find({ workshop: workshopIds });
+
+    for (let i = 0; i < workshops.length; i++) {
+      workshops[i].ratings = []
+      ratings.forEach((rating) => {
+        if (rating.workshop === workshops[i]._id.toString()) {
+          workshops[i].ratings.push(rating);
+        }
+      });
+    }
 
     res.json(workshops);
   } catch (error) {
@@ -531,7 +543,7 @@ app.get("/getUserWorkshop", async (req, res) => {
   try {
     workshopId = req.session.user.workshop;
     let workshop = await Workshop.findOne({ _id: workshopId });
-    return res.send(workshop);
+    return res.status(200).send(workshop);
   } catch {}
 });
 
@@ -590,27 +602,33 @@ app.get("/getComment", async (req, res) => {
 });
 
 app.post("/userUpdateWorkshop", async (req, res) => {
-  const workshopId = req.session.user.workshop;
+  try{
+    const workshopId = req.session.user.workshop;
 
-  Workshop.findByIdAndUpdate(
-    workshopId,
-    {
-      "address.description": req.body.addressDescription,
-      phone: req.body.phone,
-      description: req.body.description,
-      workingHours: {
-        start: req.body.worktimeStart,
-        end: req.body.worktimeEnd,
+    Workshop.findByIdAndUpdate(
+      workshopId,
+      {
+        "address.description": req.body.addressDescription,
+        phone: req.body.phone,
+        description: req.body.description,
+        workingHours: {
+          start: req.body.worktimeStart,
+          end: req.body.worktimeEnd,
+        },
       },
-    },
-    { new: true }
-  )
-    .then((updatedWorkshop) => {
-      console.log("Güncellenen Workshop:", updatedWorkshop);
-    })
-    .catch((err) => {
-      console.error("Hata:", err);
-    });
+      { new: true }
+    )
+      .then((updatedWorkshop) => {
+        
+      })
+      .catch((err) => {
+        console.error("Hata:", err);
+      });
+  }
+  catch{
+
+  }
+ 
 });
 
 app.post("/addStar", async (req, res) => {
@@ -631,10 +649,7 @@ app.post("/addStar", async (req, res) => {
       newStar.save();
       return res.send({ message: "basarıyla kayıt oldu", data: "1" });
     } else {
-      userStar.star = star;
-      await userStar.save();
-
-      return res.send({ message: "guncellendi", data: "1" });
+      return res.send({ message: "Tekrar oy kullanamazsınız", data: "1" });
     }
 
     // Diğer işlemler...
@@ -780,6 +795,35 @@ app.post("/addUserFuel", async (req, res) => {
     return res.status(404).send();
   }
 });
+
+app.get("/getUserFuel", async (req, res) => {
+  try {
+    let userId = req.query.userid;
+    let fuels = await UserFuel.find({ userid: userId });
+    return res.status(200).send(fuels);
+  } catch {
+    return res.status(400).send();
+  }
+});
+app.post("/deleteUserFuel", async (req, res) => {
+  let id = req.body.id;
+  let fuel = await UserFuel.findOneAndDelete({ _id: id });
+  return res.status(200).send();
+});
+
+app.post("/workshopImageAdd", async (req,res)=>{
+  let image = req.body.image;
+  let id = req.body.id
+  try {
+    const workshop = await Workshop.findById(id); // İlgili workshop'u bul
+    workshop.image.push(image); // Yeni veriyi image dizisine ekle
+    const updatedWorkshop = await workshop.save(); // Güncellenmiş workshop kaydet
+    res.json(updatedWorkshop); // Güncellenmiş workshop'u döndür
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+})
 
 app.listen(port, function () {
   console.log(`Server running at ${port}/`);

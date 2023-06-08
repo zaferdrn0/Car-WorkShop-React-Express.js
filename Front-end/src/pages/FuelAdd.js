@@ -1,4 +1,6 @@
 import {
+  Alert,
+  Box,
   Button,
   FormControl,
   InputLabel,
@@ -25,6 +27,8 @@ const FuelAdd = () => {
   const [liter, setLiter] = useState("");
   const [distance, setDistance] = useState("");
   const [total, setTotal] = useState("");
+  const [succesAlert,setSuccesAlert] = useState("none")
+  const [errorAlert, setErrorAlert] = useState("none")
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -85,18 +89,29 @@ const FuelAdd = () => {
   const FuelAddFunction = () => {
     if (distance === "" || distance === "0") {
       console.log("tutarı dogru giriniz");
-      
+      setSuccesAlert("none")
+      setErrorAlert("inline-flex")
+      setTimeout(function(){setErrorAlert("none")},3000)
     } else {
       if (total === "" && liter === "") {
-        console.log("ikisi de bos");
+       
+        setSuccesAlert("none")
+        setErrorAlert("inline-flex")
+        setTimeout(function(){setErrorAlert("none")},3000)
       } else {
         if (fuel === "") {
-          console.log("fuel bos bırakılamaz");
+          setSuccesAlert("none")
+          setErrorAlert("inline-flex")
+          setTimeout(function(){setErrorAlert("none")},3000)
         } else {
           backendFetchPOST("/addUserFuel", fuelObj, async (response) => {
             if (response.status === 404) return;
             const data = await response.json();
-            console.log(data);
+            if(data.message ==="Basarıyla kayıt yapıldı"){
+              setErrorAlert("none")
+              setSuccesAlert("inline-flex")
+              setTimeout(function(){setSuccesAlert("none")},3000)
+            }
           });
         }
       }
@@ -112,6 +127,7 @@ const FuelAdd = () => {
               <InputLabel id="demo-simple-select-standard-label">
                 Şehir
               </InputLabel>
+
               <Select
                 labelId="demo-simple-select-standard-label"
                 id="demo-simple-select-standard"
@@ -228,21 +244,32 @@ const FuelAdd = () => {
             <TextField
               sx={{ mt: 1 }}
               id="standard-basic"
-              label="Kac Km Yol Gittiğinizi Giriniz"
+              label="Aracınızın Km'sini Giriniz"
               variant="filled"
               size="large"
               type="number"
               onChange={(event) => setDistance(event.target.value)}
             />
           </div>
-          <div>
+          <div style={{display:"flex",flexDirection:"column",justifyContent:"center"}}>
             <Button
               onClick={FuelAddFunction}
-              sx={{ mb: 10 }}
+              sx={{ mb: 2 }}
               variant="contained"
             >
               Yakıt Değerini Kaydet
             </Button>
+            <Alert
+              sx={{  mb: 2 , color: "Black",display:succesAlert,}}
+              variant="outlined"
+              severity="success"
+              hidden = {errorAlert}
+            >
+              Yakıt Basarıyla Eklendi
+            </Alert>
+            <Alert sx={{  mb: 2,  color: "Black", display:errorAlert }} variant="outlined" severity="error">
+              Hatalı Veri Girdiniz
+            </Alert>
           </div>
         </div>
       </div>

@@ -8,10 +8,8 @@ const Box = (props) => {
     <div className="listCar-container">
       <ul>
         <a onClick={onClick}>
-          {" "}
           <li>
-            {" "}
-            <h4>{label}</h4>{" "}
+            <h4>{label}</h4>
           </li>
         </a>
       </ul>
