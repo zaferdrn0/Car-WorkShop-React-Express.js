@@ -13,7 +13,7 @@ const TableList = (props) => {
 
               return <th key={columnName}>{columnName}</th>;
             })}
-            <th className="islemler-stun">Islemler</th>
+            <th className="islemler-stun">Operation</th>
           </tr>
         </thead>
         {props.rowValues.map((row, index) => {
@@ -36,7 +36,7 @@ const TableList = (props) => {
                       key="delete"
                       type="button"
                     >
-                      Sil
+                      Delete
                     </button>
                   )}
                   {props.onUpdate !== undefined && (
@@ -47,7 +47,7 @@ const TableList = (props) => {
                       key="update"
                       type="button"
                     >
-                      Güncelle
+                      Update
                     </button>
                   )}
                   {props.onAbout !== undefined && (

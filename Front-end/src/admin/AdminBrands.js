@@ -80,7 +80,7 @@ const AdminBrands = () => {
             setPageState("table");
           }}
         >
-          geri don
+          Back
         </Button>
 
         <Box
@@ -101,7 +101,7 @@ const AdminBrands = () => {
             onChange={(event) => setbrandSet(event.target.value)}
           />
           <Button sx={{ marginTop: 3 }} variant="contained" onClick={AddBrand}>
-            Ekle
+            Add
           </Button>
         </Box>
       </Grid>

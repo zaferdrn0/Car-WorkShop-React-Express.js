@@ -22,7 +22,7 @@ const BoxList = (props) => {
     try{
    backendFetchGET("/getStar?"+ queryParams.toString(), async (response) =>{
         const data = await response.json();
-        setStars(data)
+        setStars(data.value)
       })
     }catch{
 
@@ -52,7 +52,7 @@ const BoxList = (props) => {
       <div className="rating" >
        <div className="star-rating">
         <StarRating
-         star={starRating}
+         star={parseFloat(starRating)}
          disable = {true}/> 
        </div>
        

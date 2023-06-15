@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import TableList from "../components/TableList";
 import { backendFetchGET, backendFetchPOST } from "../utils/backendFetch";
+import { Button, TextField } from "@mui/material";
 
 const AdminRepairType = () => {
   const [rtypes, setRtypes] = useState([]);
@@ -12,7 +13,6 @@ const AdminRepairType = () => {
       backendFetchGET("/getRType", async (response) => {
         const data = await response.json();
         setRtypes(data);
-  
       });
     };
     getRtype();
@@ -77,20 +77,31 @@ const AdminRepairType = () => {
   } else {
     return (
       <div>
-        <p>marka ekleniyor burada</p>
-        <button
-          onClick={() => {
-            setPageState("table");
-          }}
-        >
-          geri don
-        </button>
+        {" "}
+        <div className="admin-top-header">
+          <h3>Gas Station Control Panel</h3>
+          <button
+            onClick={() => {
+              setPageState("table");
+            }}
+          >
+           Back
+          </button>
+        </div>
         <div>
-          <input
+          <TextField
+            sx={{ mb: 2 }}
+            id="standard-basic"
+            label="Repair Type"
+            variant="standard"
+            value={repairType}
             onChange={(event) => setRepairType(event.target.value)}
-            placeholder="Tamir Turu Giriniz"
           />
-          <button onClick={AddRepairType}>Ekle</button>
+        </div>
+        <div>
+          <Button onClick={AddRepairType} variant="contained">
+            ADD Repair Type
+          </Button>
         </div>
       </div>
     );

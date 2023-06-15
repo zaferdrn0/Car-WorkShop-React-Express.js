@@ -40,11 +40,8 @@ const ListWorkshop = () => {
     else return rating;
   }
 
-  useEffect(() => {
-    
-  }, [filter]);
+  useEffect(() => {}, [filter]);
 
-  
   if (filter === "enIyi") {
     BoxListArr.sort((a, b) => {
       if (orderType === "rating") {
@@ -63,7 +60,7 @@ const ListWorkshop = () => {
     let workshopCopy = [...workshop];
     const oldWorkshop = workshopCopy.reverse();
     BoxListArr = oldWorkshop;
-  } else if(filter === "enKotu"){
+  } else if (filter === "enKotu") {
     BoxListArr.sort((a, b) => {
       if (orderType === "rating") {
         const rating_a = calculateRating(a.ratings);
@@ -79,14 +76,11 @@ const ListWorkshop = () => {
     });
   }
 
-
-
   useEffect(() => {
     backendFetchGET(
       "/getFilterWorkshop?" + queryParams.toString(),
       async (response) => {
         const data = await response.json();
-        console.log(data);
         setWorkshop(data);
       }
     );
@@ -117,8 +111,9 @@ const ListWorkshop = () => {
               >
                 <MenuItem value={"onerilen"}>Önerilen Sıralama</MenuItem>
                 <MenuItem value={"enIyi"}>En İyi</MenuItem>
-                <MenuItem value={"enEski"}>En Eski</MenuItem>
-                <MenuItem value={"enKotu"}>En Kötu</MenuItem>
+                <MenuItem value={"enKotu"}>En Kötü</MenuItem>
+                <MenuItem value={"enEski"}>En Yeni</MenuItem>
+                
               </Select>
             </FormControl>
           </Box>

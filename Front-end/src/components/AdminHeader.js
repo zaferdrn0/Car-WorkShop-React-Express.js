@@ -61,11 +61,7 @@ const AdminHeader = () => {
               <h4>Gas Station</h4>
             </Link>
           </li>
-          <li>
-            <Link to="/admin/message">
-              <h4>Message</h4>
-            </Link>
-          </li>
+        
         </ul>
       </div>
       <div className="admin-exit">

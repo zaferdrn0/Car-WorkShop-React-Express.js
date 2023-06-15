@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { backendFetchGET, backendFetchPOST } from "../utils/backendFetch";
 import Button from "@mui/material/Button";
-import { Alert, Grid, Snackbar, TextField } from "@mui/material";
+import { Alert, Box, Grid, Snackbar, TextField, Typography } from "@mui/material";
 
 const WorkshopEdit = () => {
   const [addressDescription, setAddressDescription] = useState("");
@@ -76,72 +76,97 @@ const WorkshopEdit = () => {
   if (imageAdd === false) {
     return (
       <Grid>
-        <Grid>
-        <TextField
-          id="filled-multiline-static"
-          label="Multiline"
-          multiline
-          rows={4}
-          defaultValue="Default Value"
-          variant="filled"
-        />
-          <h1>{workshop.name}</h1>
-          <button onClick={imagePage}>Resim Ekle</button>
-        
- 
-              <h3>Dukkan acıklaması</h3>{" "}
-              <textarea
-                value={description}
-                onChange={(event) => setDescription(event.target.value)}
-              ></textarea>
-         
-              <h3>Adres Acıklaması</h3>
-              <textarea
-                value={addressDescription}
-                onChange={(event) => setAddressDescription(event.target.value)}
-                placeholder="Adresin kolay olarak bulunması için tarif girin"
-              ></textarea>
+      
+        <Grid sx={{display:"flex",flexDirection:"column",alignItems:"center"}}>
+          <Typography variant="h4">{workshop.name}</Typography>
+          <TextField
+            sx={{ mt: 3 }}
+            id="filled-multiline-static"
+            label="Workshop Description"
+            multiline
+            rows={4}
+            defaultValue="Description"
+            value={description}
+            variant="outlined"
+            onChange={(event) => setDescription(event.target.value)}
+          />
+          <TextField
+            sx={{ mt: 3, mb:2 }}
+            id="filled-multiline-static"
+            label="Workshop Address Description"
+            multiline
+            rows={4}
+            value={addressDescription}
+            variant="outlined"
+            onChange={(event) => setAddressDescription(event.target.value)}
+          />
+          <TextField
+            sx={{ mb: 2 }}
+            id="standard-basic"
+            variant="outlined"
+            value={phone}
+            type="number"
+            label="Phone"
+            onChange={(event) => setPhone(event.target.value)}
+          />
+          <TextField
+            sx={{ mb: 2 }}
+            id="outlined-multiline-flexible"
+            label="E-Mail"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+          />
+          <TextField
+            sx={{ mb: 2 }}
+            id="outlined-multiline-flexible"
+            label="Web Site"
+            value={webSite}
+            onChange={(event) => setWebSite(event.target.value)}
+          />
+          <Box sx={{display:"flex",alignItems:"center"}}>
+            <Box mr={1} sx={{display:"flex",flexDirection:"column"}}>
+              <Typography>Workshop Start Time</Typography>
+            <TextField
+            sx={{ mb: 2 }}
+            id="outlined-multiline-flexible"
+            value={worktimeStart}
+            type="time"
+            onChange={(event) => setWorktimeStart(event.target.value)}
+          />
+            </Box>
+            <Box ml={1} sx={{display:"flex",flexDirection:"column"}}>
+            <Typography>Workshop Close Time</Typography>
+          <TextField
+            sx={{ mb: 2 }}
+            id="outlined-multiline-flexible"
+            type="time"
+            value={worktimeEnd}
+            onChange={(event) => setWorktimeEnd(event.target.value)}
+          />
+          </Box>
           
-              <h3>Telefon</h3>{" "}
-              <input
-                value={phone}
-                onChange={(event) => setPhone(event.target.value)}
-              />
-           
-              <h3>E-Posta</h3>
-              <input onChange={(event) => setEmail(event.target.value)} />
-          
-              <h3>Web Site</h3>
-              <input onChange={(event) => setWebSite(event.target.value)} />
-           
-              <h3>Çalısma Saati</h3> <h4>Acılıs</h4>
-              <input
-                value={worktimeStart}
-                onChange={(event) => setWorktimeStart(event.target.value)}
-              />
-              <h4>Kapanıs</h4>
-              <input
-                value={worktimeEnd}
-                onChange={(event) => setWorktimeEnd(event.target.value)}
-              />
-         
-       
+          </Box>
+          <Box sx={{display:"flex",alignItems:"center", justifyContent:"center"}}>
           <Button
-            sx={{ mt: 4, width: 200, height: 60, fontSize: 20 }}
+            sx={{ mr:5 }}
             onClick={Update}
             variant="contained"
-            color="success"
+            
           >
-            Ekle
+            Update
           </Button>
-       
-        <Snackbar open={open}>
-          <Alert severity="success" sx={{ width: "100%", fontSize: 20 }}>
-            Servis Basarıyla Guncellendi
-          </Alert>
-        </Snackbar>
+          <Button variant="contained" onClick={imagePage} color="success">
+          Resim Ekle
+        </Button>
+          </Box>
+         
+          
+          <Snackbar open={open}>
+            <Alert severity="success" sx={{ width: "100%", fontSize: 20 }}>
+              Servis Basarıyla Guncellendi
+            </Alert>
+          </Snackbar>
         </Grid>
-        
       </Grid>
     );
   } else {
@@ -154,7 +179,7 @@ const WorkshopEdit = () => {
           name="resim"
           type="file"
         />
-        <button onClick={addImage}>Ekle</button>
+        <button onClick={addImage}>Image Add</button>
       </>
     );
   }

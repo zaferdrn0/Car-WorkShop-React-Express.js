@@ -60,6 +60,61 @@ app.use(
 );
 //Cors Connection
 
+var fs = require("fs");
+var google = require("googleapis").google;
+const google_cred = JSON.parse(fs.readFileSync("./client_secret_google.json"));
+
+const axios = require("axios");
+
+// Generating google auth url
+const oauth2Client = new google.auth.OAuth2(
+  google_cred.web.client_id,
+  google_cred.web.client_secret,
+  google_cred.web.redirect_uris[0]
+);
+
+const scopes = [
+  "https://www.googleapis.com/auth/userinfo.email",
+  "https://www.googleapis.com/auth/userinfo.profile",
+];
+
+var google_auth_url = oauth2Client.generateAuthUrl({
+  scope: scopes,
+});
+
+app.get("/googleLoginUrl", async (req, res) => {
+  return res.send(JSON.stringify({ message: google_auth_url }));
+});
+// -- Generating google auth url
+
+app.get("/api/login-via-google", async (req, res) => {
+  try {
+    const { tokens } = await oauth2Client.getToken(req.query.code);
+    const fetchUrl =
+      "https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=" +
+      tokens.access_token;
+    const response = (await axios.get(fetchUrl)).data;
+    const email = response.email;
+    const name = response.given_name;
+
+    const userControl = await User.findOne({ email: email });
+    if (!userControl) {
+      const yeniKullanici = new User({
+        username: name,
+        email: email,
+        password: "",
+        phone: "",
+      });
+      await yeniKullanici.save();
+      req.session.user = yeniKullanici;
+    } else {
+      req.session.user = userControl;
+    }
+  } catch {}
+
+  return res.redirect("http://localhost:3000/");
+});
+
 app.get("/admin", function (req, res) {
   if (req.session.user && req.session.user.isAdmin === "admin") {
     // Yetkili kullanıcı, admin sayfalarını görebilir.
@@ -337,7 +392,7 @@ app.get("/getRType", async (req, res) => {
 // delete repair type
 app.post("/deleteRType", async (req, res) => {
   let rType = req.body.rType;
-  RepairType.findOneAndDelete({ ad: rType })
+  await RepairType.findOneAndDelete({ ad: rType })
     .then((result) => {
       if (result) {
         console.log(`Successfully deleted document with  ${rType}.`);
@@ -470,7 +525,7 @@ app.get("/getFilterWorkshop", async (req, res) => {
     const ratings = await Star.find({ workshop: workshopIds });
 
     for (let i = 0; i < workshops.length; i++) {
-      workshops[i].ratings = []
+      workshops[i].ratings = [];
       ratings.forEach((rating) => {
         if (rating.workshop === workshops[i]._id.toString()) {
           workshops[i].ratings.push(rating);
@@ -602,7 +657,7 @@ app.get("/getComment", async (req, res) => {
 });
 
 app.post("/userUpdateWorkshop", async (req, res) => {
-  try{
+  try {
     const workshopId = req.session.user.workshop;
 
     Workshop.findByIdAndUpdate(
@@ -615,20 +670,16 @@ app.post("/userUpdateWorkshop", async (req, res) => {
           start: req.body.worktimeStart,
           end: req.body.worktimeEnd,
         },
+        email:req.body.email,
+        website:req.body.website,
       },
       { new: true }
     )
-      .then((updatedWorkshop) => {
-        
-      })
+      .then((updatedWorkshop) => {})
       .catch((err) => {
         console.error("Hata:", err);
       });
-  }
-  catch{
-
-  }
- 
+  } catch {}
 });
 
 app.post("/addStar", async (req, res) => {
@@ -663,8 +714,13 @@ app.get("/getStar", async (req, res) => {
   let id = req.query.id;
 
   const stars = await Star.find({ workshop: id });
+  const didVote =
+    stars.findIndex((star) => star.user === req.session.user._id.toString()) ===
+    -1
+      ? false
+      : true;
   const starValues = stars.map((star) => parseInt(star.star));
-  return res.send(starValues);
+  return res.send(JSON.stringify({ value: starValues, didVote: didVote }));
 });
 
 app.post("/addStationBrand", async (req, res) => {
@@ -719,7 +775,7 @@ app.post("/addGasStation", async (req, res) => {
 app.get("/getGasStation", async (req, res) => {
   try {
     let station = await GasStation.find({});
-    console.log(station);
+
     return res.send(station);
   } catch {
     console.log("error");
@@ -811,9 +867,9 @@ app.post("/deleteUserFuel", async (req, res) => {
   return res.status(200).send();
 });
 
-app.post("/workshopImageAdd", async (req,res)=>{
+app.post("/workshopImageAdd", async (req, res) => {
   let image = req.body.image;
-  let id = req.body.id
+  let id = req.body.id;
   try {
     const workshop = await Workshop.findById(id); // İlgili workshop'u bul
     workshop.image.push(image); // Yeni veriyi image dizisine ekle
@@ -823,7 +879,7 @@ app.post("/workshopImageAdd", async (req,res)=>{
     console.error(err);
     res.status(500).json({ message: "Server error" });
   }
-})
+});
 
 app.listen(port, function () {
   console.log(`Server running at ${port}/`);

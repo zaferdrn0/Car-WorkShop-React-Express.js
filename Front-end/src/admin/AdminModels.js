@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import TableList from "../components/TableList";
 import { backendFetchGET, backendFetchPOST } from "../utils/backendFetch";
+import { Box, Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
 
 const AdminModels = () => {
   const [brand, setBrand] = useState("");
@@ -82,10 +83,10 @@ const AdminModels = () => {
         <div className="admin-top-header">
           <h3>Model Control Panel</h3>
           <div className="select-model">
-            <h4>Listelemek İstediğiniz Markayı Seçiniz</h4>{" "}
+            <h4>Please select the brand you want to list</h4>{" "}
             <select onChange={changeMarka} defaultValue={""}>
               <option value="" disabled>
-                Marka Seçiniz
+                Select Brand
               </option>
               {brands.map((brnd, index) => {
                 return (
@@ -119,36 +120,50 @@ const AdminModels = () => {
     );
   } else {
     return (
-      <div>
-        <p>marka ekleniyor burada</p>
-        <button
+      <Grid >
+        <Button
+        variant="contained"
           onClick={() => {
             setPageState("table");
           }}
         >
-          geri don
-        </button>
-        <div>
-          <select onChange={changeMarka} defaultValue={""}>
-            <option value="" disabled>
-              Marka Seçiniz
-            </option>
-            {brands.map((brnd, index) => {
+       Back
+        </Button>
+        <Grid sx={{display:"flex",flexDirection:"column",alignItems:"center"}}>
+        <FormControl sx={{ m: 1, minWidth: 80 }}>
+            <InputLabel id="demo-simple-select-autowidth-label">Brand</InputLabel>
+            <Select
+              labelId="demo-simple-select-autowidth-label"
+              id="demo-simple-select-autowidth"
+              value={brand}
+              onChange={changeMarka}
+              autoWidth
+              label="Brand"
+              sx={{ marginBottom: "20px" }}
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              {brands.map((brnd, index) => {
               return (
-                <option key={index} value={brnd.ad}>
+                <MenuItem key={index} value={brnd.ad}>
                   {brnd.ad}
-                </option>
+                </MenuItem>
               );
             })}
-          </select>
-          <input
-            onChange={(event) => setModel(event.target.value)}
-            type="text"
-            placeholder="Model Giriniz"
-          />
-          <button onClick={AddModel}> Model Ekle</button>
-        </div>
-      </div>
+            </Select>
+          </FormControl>
+         <TextField
+          onChange={(event) => setModel(event.target.value)}
+          id="outlined-basic"
+          label="Model"
+          variant="outlined"
+         />
+         
+          <Button sx={{mt:5}} variant="contained" onClick={AddModel}> Model add</Button>
+          </Grid>
+        </Grid>
+   
     );
   }
 };

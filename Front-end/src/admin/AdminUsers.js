@@ -161,7 +161,7 @@ const AdminUsers = () => {
               setPageState("table");
             }}
           >
-            geri don
+            Back
           </Button>
         </Box>
 
@@ -235,18 +235,6 @@ const AdminUsers = () => {
   } else if (pageState === "addWorkshop") {
     return (
       <Grid>
-        {/* <select onChange={ChangeCity} defaultValue={""}>
-          <option value="" disabled>
-            Sehir Seçiniz
-          </option>
-          {cities.map((city, index) => {
-            return (
-              <option key={index} value={city.ilAdi}>
-                {city.ilAdi}
-              </option>
-            );
-          })}
-        </select> */}
         <Box
           sx={{
             display: "flex",
@@ -255,7 +243,9 @@ const AdminUsers = () => {
             alignItems: "center",
           }}
         >
-          <Typography variant="h4" mb={5}>Workshop Add User</Typography>
+          <Typography variant="h4" mb={5}>
+            Workshop Add User
+          </Typography>
           <FormControl sx={{ m: 1, minWidth: 180 }}>
             <InputLabel id="demo-simple-select-autowidth-label">
               City Select

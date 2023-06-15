@@ -2,6 +2,17 @@ import React, { useEffect, useState } from "react";
 import { backendFetchGET, backendFetchPOST } from "../utils/backendFetch";
 import TableList from "../components/TableList";
 import "./adminCss/modal.css";
+import {
+  Box,
+  Button,
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  Typography,
+} from "@mui/material";
 
 const AdminWorkshops = () => {
   const [page, setPage] = useState("table");
@@ -233,98 +244,182 @@ const AdminWorkshops = () => {
     );
   } else if (page === "addWorkshop") {
     return (
-      <>
-        <button onClick={() => setPage("table")}>Don</button>
-        <div>
-          <input
+      <Grid>
+        <Box>
+          <Button variant="contained" onClick={() => setPage("table")}>
+            Back
+          </Button>
+        </Box>
+
+        <Grid
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <TextField
+            sx={{ mb: 2 }}
+            id="standard-basic"
+            label="Workshop Name"
+            variant="outlined"
+            value={name}
             onChange={(event) => setName(event.target.value)}
-            placeholder="Name"
           />
-          <select onChange={ChangeCity} defaultValue={""}>
-            <option value="" disabled>
-              Sehir Seçiniz
-            </option>
-            {cities.map((city, index) => {
-              return (
-                <option key={index} value={city.ilAdi}>
-                  {city.ilAdi}
-                </option>
-              );
-            })}
-          </select>
-          <select
-            onChange={(event) => setDist(event.target.value)}
-            defaultValue={""}
-          >
-            <option value="" disabled>
-              İlce Seçiniz
-            </option>
-            {district.map((dist, index) => {
-              return (
-                <option key={index} value={dist}>
-                  {dist}
-                </option>
-              );
-            })}
-          </select>
-          <h4>Image Add</h4>
-          <input
-            onChange={(event) => setImage(event.target.value)}
-            id="productImage"
-            name="resim"
+          <FormControl sx={{ m: 1, minWidth: 220 }}>
+            <InputLabel id="demo-simple-select-autowidth-label">
+              City
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-autowidth-label"
+              id="demo-simple-select-autowidth"
+              value={cityName}
+              onChange={ChangeCity}
+              autoWidth
+              label="City"
+              sx={{ marginBottom: "20px" }}
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              {cities.map((city, index) => {
+                return (
+                  <MenuItem key={index} value={city.ilAdi}>
+                    {city.ilAdi}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
+
+          <FormControl sx={{ m: 1, minWidth: 220 }}>
+            <InputLabel id="demo-simple-select-autowidth-label">
+              District
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-autowidth-label"
+              id="demo-simple-select-autowidth"
+              value={dist}
+              onChange={(event) => setDist(event.target.value)}
+              autoWidth
+              label="District"
+              sx={{ marginBottom: "20px" }}
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              {district.map((dist, index) => {
+                return (
+                  <MenuItem key={index} value={dist}>
+                    {dist}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
+
+          <Typography>Image Add</Typography>
+          <TextField
+            sx={{ mb: 2 }}
+            id="standard-basic"
+            variant="filled"
+            value={image}
             type="file"
+            onChange={(event) => setImage(event.target.value)}
           />
 
-          <input
+          <TextField
+            sx={{ mb: 2 }}
+            id="standard-basic"
+            variant="outlined"
+            value={phone}
+            type="number"
+            label="Phone"
             onChange={(event) => setPhone(event.target.value)}
-            placeholder="phone"
-          />
-          <input
-            onChange={(event) => setDescription(event.target.value)}
-            placeholder="description"
-          />
-          <input
-            onChange={(event) => setAddress(event.target.value)}
-            placeholder="Address"
           />
 
-          <button onClick={AddWorkshop}>WorkShop Add</button>
-        </div>
-      </>
+          <TextField
+            sx={{ mb: 2 }}
+            id="outlined-multiline-flexible"
+            label="Description"
+            multiline
+            maxRows={4}
+            onChange={(event) => setDescription(event.target.value)}
+          />
+          <TextField
+            sx={{ mb: 2 }}
+            id="outlined-multiline-flexible"
+            label="Address"
+            multiline
+            maxRows={4}
+            onChange={(event) => setAddress(event.target.value)}
+          />
+
+          <Button variant="outlined" onClick={AddWorkshop}>
+            WorkShop Add
+          </Button>
+        </Grid>
+      </Grid>
     );
   } else if (page === "addProps") {
     return (
-      <div>
-        <select onChange={changeMarka} defaultValue={""}>
-          <option value="" disabled>
-            Marka Seçiniz
-          </option>
-          {brands.map((brnd, index) => {
-            return (
-              <option key={index} value={brnd.ad}>
-                {brnd.ad}
-              </option>
-            );
-          })}
-        </select>
-        <select
-          onChange={(event) => setRepairType(event.target.value)}
-          defaultValue={""}
-        >
-          <option value="" disabled>
-            Bakım Turu Seciniz
-          </option>
-          {repairTypes.map((type, index) => {
-            return (
-              <option key={index} value={type}>
-                {type}
-              </option>
-            );
-          })}
-        </select>
+      <Grid>
+        <Grid sx={{display:"flex",flexDirection:"column",alignItems:"center"}}>
+          <Typography> Add WorkShop Props</Typography>
+          <FormControl sx={{ m: 1, minWidth: 220, mt:5 }}>
+            <InputLabel id="demo-simple-select-autowidth-label">
+              Select Brand
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-autowidth-label"
+              id="demo-simple-select-autowidth"
+              value={brand}
+              onChange={changeMarka}
+              autoWidth
+              label="District"
+              sx={{ marginBottom: "20px" }}
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              {brands.map((brnd, index) => {
+                return (
+                  <MenuItem key={index} value={brnd.ad}>
+                    {brnd.ad}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
 
-        <button onClick={AddWorkshopProps}>Add Workshop Props</button>
-      </div>
+          <FormControl sx={{ m: 1, minWidth: 220 }}>
+            <InputLabel id="demo-simple-select-autowidth-label">
+              Select Repair Type
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-autowidth-label"
+              id="demo-simple-select-autowidth"
+              value={repairType}
+              onChange={(event) => setRepairType(event.target.value)}
+              autoWidth
+              label="District"
+              sx={{ marginBottom: "20px" }}
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              {repairTypes.map((type, index) => {
+                return (
+                  <MenuItem key={index} value={type}>
+                    {type}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
+          <Button variant="contained" onClick={AddWorkshopProps}>Add Workshop Props</Button>
+        </Grid>
+      </Grid>
     );
   }
 };

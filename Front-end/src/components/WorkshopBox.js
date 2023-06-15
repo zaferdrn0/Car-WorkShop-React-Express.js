@@ -3,10 +3,12 @@ import StarRating from "./StarRating";
 import { backendFetchGET, backendFetchPOST } from "../utils/backendFetch";
 import { useSearchParams } from "react-router-dom";
 import Slideshow from "./Slideshow";
+import { Box } from "@mui/material";
 
 const WorkshopBox = (props) => {
   const { workshop } = props;
   const [stars, setStars] = useState([]);
+  const [didVote, setDidVote] = useState([]);
 
   let [searchParams, setSearchParams] = useSearchParams();
   let id = searchParams.get("id");
@@ -20,7 +22,8 @@ const WorkshopBox = (props) => {
         "/getStar?" + queryParams.toString(),
         async (response) => {
           const data = await response.json();
-          setStars(data);
+          setStars(data.value);
+          setDidVote(data.didVote);
         }
       );
     } catch {}
@@ -46,9 +49,12 @@ const WorkshopBox = (props) => {
     <React.Fragment>
       {workshop && workshop.image && (
         <div className="workshop-component">
-          <div className="left">
+          <Box
+            sx={{ height: "500px", width: "800px", }}
+            className="left"
+          >
             <Slideshow images={workshop.image} />
-          </div>
+          </Box>
           <div className="right">
             <div className="left">
               <div>
@@ -74,8 +80,8 @@ const WorkshopBox = (props) => {
               </div>
               <div className="rate-star">
                 <StarRating
-                  star={starRating}
-                  disable={false}
+                  star={parseFloat(starRating)}
+                  disable={didVote}
                   onChange={(newRating, isAlreadyVoted) => {
                     setStars((prevState) => {
                       let toReturn = [...prevState];
@@ -83,7 +89,8 @@ const WorkshopBox = (props) => {
                         ? (toReturn[toReturn.length - 2] =
                             parseFloat(newRating))
                         : toReturn.push(parseFloat(newRating));
-                      console.log(toReturn);
+
+                      setDidVote(true);
                       return toReturn;
                     });
                   }}
@@ -114,7 +121,7 @@ const WorkshopBox = (props) => {
                 <h3>Telefon : {workshop?.phone}</h3>
                 <h3>Eposta : {workshop?.email} </h3>
                 <h3>
-                  <a href={workshop?.website}>Web Site</a>
+                  <a href={"https://" + workshop?.website}>Web Site</a>
                 </h3>
               </div>
 

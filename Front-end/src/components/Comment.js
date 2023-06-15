@@ -13,7 +13,7 @@ const Comment = (props) => {
         <p>{comment}</p>
     </div>
     <div className='comment-like'>
-        OYLAMALAR BURADA OLACAK
+      
     </div>
     </div>
  

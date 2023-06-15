@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import {
   Button,
+  Card,
   FormControl,
   Grid,
   InputLabel,
@@ -29,7 +30,10 @@ const FuelDetail = () => {
   const [endDate, setEndDate] = useState("");
   const [fuelType, setFuelType] = useState([]);
   const [fuelTypeState, setFuelTypeState] = useState("");
-  const [totalFuelPrice, setTotalFuelPrice] = useState(0);
+  const [totalPrice, setTotalPrice] = useState();
+  const [totalLiter, setTotalLiter] = useState();
+  const [totalKm, setTotalKm] = useState();
+  const [displayState, setDisplayState] = useState("none");
 
   const queryParams = new URLSearchParams({ userid: user._id });
 
@@ -60,6 +64,7 @@ const FuelDetail = () => {
 
   const table_style = {
     color: "white",
+    backgroundColor: "#0077ff",
     textAlign: "center",
   };
   const column_style = {
@@ -68,9 +73,11 @@ const FuelDetail = () => {
 
   const ReturnToStart = () => {
     setFuelArr(fuels);
+    setDisplayState("none");
   };
 
   const FuelFilterFunction = async () => {
+    setDisplayState("none");
     const startDates = new Date(startDate);
     const endDates = new Date(endDate);
 
@@ -110,20 +117,25 @@ const FuelDetail = () => {
   };
 
   const accountData = () => {
-    let totalPrice = 0;
-    let totalLiter = 0;
-    let totalKm = 0;
+    setDisplayState("block");
+    if (fuelArr.length === 0) return;
+    let price = 0;
+    let liter = 0;
+    let km = 0;
+
     fuelArr.forEach((element) => {
-      totalPrice += parseInt(element.fuelprice);
+      price += parseInt(element.fuelprice);
     });
-    totalKm = parseInt(fuelArr[fuelArr.length - 1].distance)-parseInt(fuelArr[0].distance)
-    fuelArr.forEach(element => {
-      totalLiter += parseInt(element.fuelliter)
+    km =
+      parseInt(fuelArr[fuelArr.length - 1].distance) -
+      parseInt(fuelArr[0].distance);
+    fuelArr.forEach((element) => {
+      liter += parseInt(element.fuelliter);
     });
-    console.log(totalLiter)
-    console.log(totalKm)
-    console.log(totalPrice);
-    console.log(totalPrice/totalLiter)
+
+    setTotalPrice(price);
+    setTotalLiter(liter);
+    setTotalKm(km);
   };
 
   useEffect(() => {
@@ -136,150 +148,226 @@ const FuelDetail = () => {
   return (
     <>
       <Grid
-        sx={{ background: "white", mt: 1, pl: "50px", pr: "50px" }}
+        sx={{
+          background: "#f0f8ff",
+          mt: 1,
+          pl: "50px",
+          pr: "50px",
+          height: "90vh",
+        }}
         container
         spacing={3}
       >
-        <Grid item xs={12}>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-            fontWeight="fontWeightBold"
-            fontSize={24}
-          >
-            <Typography>Yakıt Takip Sistemi</Typography>
-          </Box>
-        </Grid>
-
         {fuelArr.length === 0 ? (
           <>
-            <Grid item xs={12} sx={{ marginBottom: "5vh" }}>
+            <Grid item lg={7} sm={12} sx={{ marginBottom: "2vh" }}>
               <Box
                 sx={{
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
+                  flexDirection: "column",
                 }}
               >
                 <Typography>Veri Bulunamadı</Typography>
                 <Button onClick={ReturnToStart}>Basa Dön</Button>
+                <img src="./images/Opps.png" alt="Opps!" width="400px" />
               </Box>
             </Grid>
           </>
         ) : (
-          <Grid item xs={12} sx={{ marginBottom: "5vh" }}>
-            <Box>
-              <TableContainer>
-                <Table aria-label="simple table">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell sx={table_style}> Tarih</TableCell>
-                      <TableCell sx={table_style}>Yakıt Turu</TableCell>
-                      <TableCell sx={table_style}>Markası</TableCell>
-                      <TableCell sx={table_style}>Litre</TableCell>
-                      <TableCell sx={table_style}>Tl</TableCell>
-                      <TableCell sx={table_style}>Arac Km</TableCell>
-                      <TableCell sx={table_style}>Islemler</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {fuelArr.map((fuel, index) => {
-                      return (
-                        <TableRow key={index} sx={{ textAlign: "center" }}>
-                          <TableCell sx={column_style}>{fuel.date}</TableCell>
-                          <TableCell sx={column_style}>
-                            {fuel.fueltype}
-                          </TableCell>
-                          <TableCell sx={column_style}>
-                            {fuel.stationbrand}
-                          </TableCell>
-                          <TableCell sx={column_style}>
-                            {fuel.fuelliter}
-                          </TableCell>
-                          <TableCell sx={column_style}>
-                            {fuel.fuelprice}
-                          </TableCell>
-                          <TableCell sx={column_style}>
-                            {fuel.distance}
-                          </TableCell>
-                          <TableCell sx={table_style}>
-                            <Button
-                              onClick={() => DeleteFuel(fuel)}
-                              sx={{ bgcolor: "#ff9e81" }}
-                            >
-                              Sil
-                            </Button>
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Box>
+          <Grid
+            item
+            md={12}
+            sm={12}
+            xs={12}
+            lg={8}
+            sx={{ marginBottom: "1vh" }}
+          >
+            <Typography sx={{ mb: 2 }} variant="h4">
+              Yakıt Takip
+            </Typography>
+            <TableContainer sx={{ height: "450px" }}>
+              <Table stickyHeader aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell sx={table_style}> Tarih</TableCell>
+                    <TableCell sx={table_style}>Yakıt Turu</TableCell>
+                    <TableCell sx={table_style}>Markası</TableCell>
+                    <TableCell sx={table_style}>Litre</TableCell>
+                    <TableCell sx={table_style}>Tl</TableCell>
+                    <TableCell sx={table_style}>Arac Km</TableCell>
+                    <TableCell sx={table_style}>Islemler</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {fuelArr.map((fuel, index) => {
+                    return (
+                      <TableRow key={index} sx={{ textAlign: "center" }}>
+                        <TableCell sx={column_style}>{fuel.date}</TableCell>
+                        <TableCell sx={column_style}>{fuel.fueltype}</TableCell>
+                        <TableCell sx={column_style}>
+                          {fuel.stationbrand}
+                        </TableCell>
+                        <TableCell sx={column_style}>
+                          {fuel.fuelliter}
+                        </TableCell>
+                        <TableCell sx={column_style}>
+                          {fuel.fuelprice}
+                        </TableCell>
+                        <TableCell sx={column_style}>{fuel.distance}</TableCell>
+                        <TableCell sx={column_style}>
+                          <Button
+                            onClick={() => DeleteFuel(fuel)}
+                            sx={{ bgcolor: "#ff9e81" }}
+                          >
+                            Sil
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </TableContainer>
           </Grid>
         )}
 
-        <Grid item lg={5} sx={{display:"flex",flexDirection:"column" ,alignItems:"center", width:"100%"}} mb={"25vh"}>
-          <Typography mb={2} variant="h6">Filtrele</Typography>
-          <TextField
-            id="date"
-            label="Baslangıc Tarihi"
-            type="date"
-            InputLabelProps={{
-              shrink: true,
+        <Grid
+          item
+          lg={4}
+          sm={12}
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            width: "100%",
+            height: "480px",
+            mt: 6,
+          }}
+          mb={"1vh"}
+        >
+          <Card
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              padding: "30px",
+              borderRadius: "10px",
             }}
-            value={startDate}
-            onChange={(event) => setStartDate(event.target.value)}
-            sx={{marginBottom:"20px", width:"16rem"}}
-          />
-          <TextField
-            id="date"
-            label="Bitiş Tarihi"
-            type="date"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            value={endDate}
-            onChange={(event) => setEndDate(event.target.value)}
-            sx={{marginBottom:"20px",width:"16rem"}}
-          />
-          <FormControl
-            variant="standard"
-            sx={{ m: 1, minWidth: "16rem", Height: 500,marginBottom:"20px" }}
           >
-            <InputLabel id="demo-simple-select-standard-label">
-              Akaryakıt Turu
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-standard-label"
-              id="demo-simple-select-standard"
-              value={fuelTypeState}
-              onChange={(event) => setFuelTypeState(event.target.value)}
-              label="Yakıt Turu"
+            <Typography mb={2} variant="h6">
+              Filtrele
+            </Typography>
+            <TextField
+              id="date"
+              label="Baslangıc Tarihi"
+              type="date"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              value={startDate}
+              onChange={(event) => setStartDate(event.target.value)}
+              sx={{ marginBottom: "20px", width: "16rem" }}
+            />
+            <TextField
+              id="date"
+              label="Bitiş Tarihi"
+              type="date"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              value={endDate}
+              onChange={(event) => setEndDate(event.target.value)}
+              sx={{ marginBottom: "20px", width: "16rem" }}
+            />
+            <FormControl
+              variant="standard"
+              sx={{
+                m: 1,
+                minWidth: "16rem",
+                Height: 500,
+                marginBottom: "20px",
+              }}
             >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
+              <InputLabel id="demo-simple-select-standard-label">
+                Akaryakıt Turu
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-standard-label"
+                id="demo-simple-select-standard"
+                value={fuelTypeState}
+                onChange={(event) => setFuelTypeState(event.target.value)}
+                label="Yakıt Turu"
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
 
-              {fuelType.length !== 0 &&
-                fuelType.map((fuel, index) => (
-                  <MenuItem key={index} value={fuel.ad}>
-                    {fuel.ad}
-                  </MenuItem>
-                ))}
-            </Select>
-          </FormControl>
-          <Button variant="contained" onClick={FuelFilterFunction}>
-            Filtrele
-          </Button>
-          
+                {fuelType.length !== 0 &&
+                  fuelType.map((fuel, index) => (
+                    <MenuItem key={index} value={fuel.ad}>
+                      {fuel.ad}
+                    </MenuItem>
+                  ))}
+              </Select>
+            </FormControl>
+            <Button variant="contained" onClick={FuelFilterFunction}>
+              Filtrele
+            </Button>
+            <Button
+              color="success"
+              sx={{ mt: 3 }}
+              variant="contained"
+              onClick={accountData}
+            >
+              Hesapla
+            </Button>
+          </Card>
         </Grid>
-        <Grid item lg={7}>
-        <Button onClick={accountData}>Hesapla</Button>
+        <Grid
+          sx={{ display: "flex", justifyContent: "center" }}
+          item
+          lg={4}
+          sm={4}
+        >
+          <Card
+            sx={{
+              minHeight: "100px",
+              alignItems: "center",
+              justifyContent: "center",
+              borderRadius: "10px",
+              marginBottom: "5vh",
+              minWidth: "380px",
+              padding: 4,
+              display: displayState,
+            }}
+          >
+            <Box>
+              <Typography mb={2} fontWeight={600} variant="h5">
+                Hesaplanan Yakıt Değerleri
+              </Typography>
+              <Box sx={{ display: "flex", mb: "15px" }}>
+                <Typography sx={{ fontWeight: "700" }}>
+                  Toplam Yapılan Km :{" "}
+                </Typography>
+                <Typography>{totalKm}</Typography>
+              </Box>
+
+              <Box sx={{ display: "flex", mb: "15px" }}>
+                <Typography sx={{ fontWeight: "700" }}>
+                  Alınan Toplam Yakıt Litresi :{" "}
+                </Typography>
+                <Typography>{totalLiter}</Typography>
+              </Box>
+
+              <Box sx={{ display: "flex", mb: "15px" }}>
+                <Typography sx={{ fontWeight: "700" }}>
+                  Yakıta Verilen Para :{" "}
+                </Typography>
+                <Typography>{totalPrice}</Typography>
+              </Box>
+            </Box>
+          </Card>
         </Grid>
       </Grid>
     </>
