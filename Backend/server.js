@@ -16,16 +16,17 @@ const GasBrand = require("./models/GasBrand");
 const GasStation = require("./models/GasStation");
 const Fuels = require("./models/Fuels");
 const UserFuel = require("./models/UserFuel");
+require('dotenv').config();
 const port = 4000;
 app.use(require("body-parser").json());
 
 //Database and Session Connection
 
 mongoose
-  .connect("mongodb://localhost:27017/My-Car-Service")
+  .connect(process.env.DATABASE_CONNECTION_STRING)
   .then(() => console.log("Connected!"));
 const store = new MongoDBStore({
-  uri: "mongodb://localhost:27017/My-Car-Service",
+  uri: process.env.DATABASE_CONNECTION_STRING,
   collection: "sessions",
 });
 app.use(
